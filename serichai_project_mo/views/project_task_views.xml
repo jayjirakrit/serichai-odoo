@@ -1,0 +1,37 @@
+<odoo>
+    <record id="view_task_form2_inherit_mrp" model="ir.ui.view">
+        <field name="name">project.task.form.inherit.mrp</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button name="action_view_mrp_productions"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-industry"
+                        invisible="mrp_production_count == 0">
+                    <field name="mrp_production_count" widget="statinfo"
+                           string="Manufacturing Orders"/>
+                </button>
+            </xpath>
+
+            <xpath expr="//page[@name='sub_tasks_page']" position="after">
+                <page string="Manufacturing Orders" name="mrp_production_page">
+                    <field name="mrp_production_ids" nolabel="1">
+                        <list>
+                            <field name="name"/>
+                            <field name="product_id"/>
+                            <field name="product_qty"/>
+                            <field name="date_start"/>
+                            <field name="date_finished"/>
+                            <field name="state" widget="badge"
+                                   decoration-success="state == 'done'"
+                                   decoration-info="state == 'progress'"
+                                   decoration-warning="state == 'confirmed'"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
