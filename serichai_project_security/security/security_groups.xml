@@ -1,0 +1,8 @@
+<odoo>
+    <record id="group_project_task_list_only" model="res.groups">
+        <field name="name">Task List Viewer (Production Planning Only)</field>
+        <field name="sequence">5</field>
+        <field name="privilege_id" ref="project.res_groups_privilege_project"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+</odoo>

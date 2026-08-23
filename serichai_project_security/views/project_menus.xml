@@ -1,0 +1,56 @@
+<odoo>
+    <!-- Grant the restricted role visibility of the Project app icon itself.
+         Additive only: existing groups on this menu (User, Administrator) are untouched. -->
+    <record id="project.menu_main_pm" model="ir.ui.menu">
+        <field name="group_ids" eval="[(4, ref('group_project_task_list_only'))]"/>
+    </record>
+
+    <!-- Restricted role's own "All Tasks" entry, pointing at the restricted action.
+         2026-08-06: promoted to a top-level tab (parent = the Project app root, not the Tasks
+         submenu) with sequence=0, so it resolves as the lowest-sequence visible top-level menu
+         for this role - Odoo's default-landing-page rule - and its click-through target is now
+         one click from the app icon instead of two. -->
+    <menuitem id="menu_task_all_restricted"
+              name="All Tasks"
+              parent="project.menu_main_pm"
+              action="action_task_all_restricted"
+              groups="group_project_task_list_only"
+              sequence="0"/>
+
+    <!-- Explicit-whitelist replace (verified against the live database in T005 - see
+         research.md §2/contracts/module-interface.md): menu_projects, menu_project_report
+         and menu_project_management_all_tasks currently have NO groups set (visible to any
+         internal user who can reach the parent app icon), so once the restricted role gains
+         that app icon (above), it would otherwise see these too. menu_project_config already
+         had exactly [group_project_manager] - reproduced unchanged, not widened. -->
+    <record id="project.menu_projects" model="ir.ui.menu">
+        <field name="group_ids" eval="[(6, 0, [ref('project.group_project_manager'), ref('project.group_project_user')])]"/>
+    </record>
+    <!-- 2026-08-06: this database has "Use Stages on Project" (project.group_project_stages)
+         implied by base.group_user (every internal user - including the restricted role - holds
+         it), and project/models/ir_ui_menu.py's _load_menus_blacklist() blacklists the plain
+         menu_projects above for anyone with that group, leaving THIS twin menu as the one that
+         actually renders. Its native `groups="project.group_project_stages"` alone therefore does
+         not exclude the restricted role; apply the same explicit whitelist here. -->
+    <record id="project.menu_projects_group_stage" model="ir.ui.menu">
+        <field name="group_ids" eval="[(6, 0, [ref('project.group_project_manager'), ref('project.group_project_user')])]"/>
+    </record>
+    <record id="project.menu_project_report" model="ir.ui.menu">
+        <field name="group_ids" eval="[(6, 0, [ref('project.group_project_manager'), ref('project.group_project_user')])]"/>
+    </record>
+    <record id="project.menu_project_management_all_tasks" model="ir.ui.menu">
+        <field name="group_ids" eval="[(6, 0, [ref('project.group_project_manager'), ref('project.group_project_user')])]"/>
+    </record>
+    <record id="project.menu_project_config" model="ir.ui.menu">
+        <field name="group_ids" eval="[(6, 0, [ref('project.group_project_manager')])]"/>
+    </record>
+
+    <!-- 2026-08-06: same explicit-whitelist pattern, applied to the top-level "Tasks" menu -
+         live-DB-verified to have NO groups set (contracts/module-interface.md). Now that
+         menu_task_all_restricted (above) moved out from under it, Tasks would otherwise still be
+         visible - and reachable - to the restricted role, along with its ungated "My Tasks"
+         child, since child-menu visibility is inherited from the parent's visibility. -->
+    <record id="project.menu_project_management" model="ir.ui.menu">
+        <field name="group_ids" eval="[(6, 0, [ref('project.group_project_manager'), ref('project.group_project_user')])]"/>
+    </record>
+</odoo>

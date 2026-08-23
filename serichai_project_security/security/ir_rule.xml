@@ -1,0 +1,9 @@
+<odoo>
+    <record id="rule_task_stage_restricted" model="ir.rule">
+        <field name="name">Restricted user: only Production Planning stage</field>
+        <field name="model_id" ref="project.model_project_task"/>
+        <field name="domain_force">[('stage_id.name', 'in', ['วางแผนการผลิต', 'กำลังผลิตสินค้า', 'เตรียมส่งสินค้า', 'เสร็จสิ้น'])] if user.has_group('serichai_project_security.group_project_task_list_only') else [(1, '=', 1)]</field>
+        <field name="groups" eval="[(5, 0, 0)]"/>
+    </record>
+   
+</odoo>
