@@ -16,6 +16,7 @@ no access to task forms. Projects / Reporting / Configuration menus are hidden f
         'security/ir_rule.xml',
         'views/project_task_views.xml',
         'views/project_menus.xml',
+        'views/project_task_property_access_views.xml',
     ],
     'installable': True,
     'author': 'Serichai Group',

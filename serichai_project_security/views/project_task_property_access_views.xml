@@ -1,0 +1,40 @@
+<odoo>
+    <record id="view_project_task_property_access_list" model="ir.ui.view">
+        <field name="name">project.task.property.access.list</field>
+        <field name="model">project.task.property.access</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="property_string"/>
+                <field name="group_ids" widget="many2many_tags"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_project_task_property_access_form" model="ir.ui.view">
+        <field name="name">project.task.property.access.form</field>
+        <field name="model">project.task.property.access</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="property_string"/>
+                        <field name="group_ids" widget="many2many_tags"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_project_task_property_access" model="ir.actions.act_window">
+        <field name="name">Task Property Access</field>
+        <field name="res_model">project.task.property.access</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_project_task_property_access"
+              name="Task Property Access"
+              parent="project.menu_project_config"
+              action="action_project_task_property_access"
+              groups="project.group_project_manager"
+              sequence="20"/>
+</odoo>
