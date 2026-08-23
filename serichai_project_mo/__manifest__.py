@@ -11,4 +11,5 @@
     ],
     'installable': True,
     'author': 'Serichai Group',
+    'license': 'AGPL-3',
 }
