@@ -11,16 +11,3 @@ class ProjectTask(models.Model):
     def _compute_mrp_production_count(self):
         for task in self:
             task.mrp_production_count = len(task.mrp_production_ids)
-
-    def action_view_mrp_productions(self):
-        """Smart button action to open related MOs."""
-        self.ensure_one()
-        action = self.env['ir.actions.actions']._for_xml_id(
-            'mrp.mrp_production_action'
-        )
-        action['domain'] = [('project_task_id', '=', self.id)]
-        action['context'] = {
-            'default_project_task_id': self.id,
-            'search_default_project_task_id': self.id,
-        }
-        return action
