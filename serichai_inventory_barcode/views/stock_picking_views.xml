@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form_barcode_scan" model="ir.ui.view">
+        <field name="name">stock.picking.form.barcode.scan</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='operations']/field[@name='move_ids']" position="before">
+                <div class="alert alert-info py-1 px-2 mb-2" role="alert" invisible="state in ('cancel', 'done')">
+                    <i class="fa fa-barcode me-1"/>
+                    Scan a product barcode anywhere on this page to add or increment a line.
+                </div>
+                <widget name="stock_picking_barcode_scanner" invisible="state in ('cancel', 'done')"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
