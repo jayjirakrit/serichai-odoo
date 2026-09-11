@@ -7,7 +7,9 @@
     'depends': ['project', 'mrp'],
     'data': [
         "views/mrp_production_views.xml",
-        "views/project_task_views.xml"
+        "views/project_task_views.xml",
+        "report/project_task_report_views.xml",
+        "report/project_task_report_templates.xml"
     ],
     'installable': True,
     'author': 'Serichai Group',

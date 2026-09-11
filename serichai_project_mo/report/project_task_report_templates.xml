@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_contract_mo">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <h2>Contract MO</h2>
+                    <div class="row mb-3">
+                        <h4><span t-field="o.name">ชื่อสัญญา</span></h4>
+                    </div>
+
+                    <t t-set="task_properties" t-value="o._get_report_task_properties()"/>
+                    <div t-if="task_properties" class="row mb-4">
+                        <div t-foreach="task_properties" t-as="task_property" class="col-3 mb-2">
+                            <strong><span t-esc="task_property['string']">เลขที่สัญญา</span>:</strong>
+                            <span t-esc="task_property['value']">A-001</span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-5">
+                            <h4>Manufacturing Order</h4>
+                        </div>
+                    </div>
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%">Manufacturing Order</th>
+                                <th>Product</th>
+                                <th class="text-end" style="width: 20%">Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="o.mrp_production_ids" t-as="mo">
+                                <td><span t-field="mo.name">WH/MO/00001</span></td>
+                                <td><span t-field="mo.product_id.display_name">Product [Size: M]</span></td>
+                                <td class="text-end">
+                                    <span t-field="mo.product_qty">2</span>
+                                    <span t-field="mo.product_uom_id.name">ตัว</span>
+                                </td>
+                            </tr>
+                            <tr t-foreach="range(max(0, 15 - len(o.mrp_production_ids)))" t-as="blank_row">
+                                <td>&#160;</td><td>&#160;</td><td>&#160;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="table table-borderless mt-3 mb-5">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong>หมายเหตุ / Remarks:</strong>
+                                    <span t-field="o.description"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="table table-borderless mt-5 text-center">
+                        <tbody>
+                            <tr>
+                                <td style="width: 50%">.....................................................</td>
+                                <td style="width: 50%">.....................................................</td>
+                            </tr>
+                            <tr>
+                                <td>( &#160;&#160;&#160;&#160; / &#160;&#160;&#160;&#160; / &#160;&#160;&#160;&#160; )</td>
+                                <td t-if="o.user_ids">( <span t-esc="', '.join(o.user_ids.mapped('name'))">John Doe</span> )</td>
+                                <td t-else="1">( &#160;&#160;&#160;&#160; / &#160;&#160;&#160;&#160; / &#160;&#160;&#160;&#160; )</td>
+                            </tr>
+                            <tr>
+                                <td>หัวหน้าแผนกเย็บ</td>
+                                <td>ผู้สั่งผลิต</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+</odoo>
