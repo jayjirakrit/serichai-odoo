@@ -4,7 +4,7 @@
 
 **Created**: 2026-09-30
 
-**Status**: Closed (2026-10-01) — implemented; automated tests pass except the pre-existing, unrelated `test_restricted_list_hides_tags_column`. Manual walkthroughs T023/T029 (tasks.md) not yet performed.
+**Status**: Closed (2026-10-01) — implemented; all automated tests pass. Manual walkthroughs T023/T029 (tasks.md) not yet performed.
 
 **Input**: User description: "As solution architect, I want to update project security group list in module serichai-odoo/serichai_project_security to allow user group in group_project_task_list_only have more access in project 'Product Development'"
 

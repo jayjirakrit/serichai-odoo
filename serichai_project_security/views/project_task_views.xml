@@ -11,6 +11,10 @@
             <list position="attributes">
                 <attribute name="open_form_view">false</attribute>
             </list>
+            <!-- Spec 001 FR-006: no Tags column for the restricted role. -->
+            <field name="tag_ids" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </field>
         </field>
     </record>
 
