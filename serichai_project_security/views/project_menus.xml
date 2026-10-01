@@ -17,6 +17,15 @@
               groups="group_project_task_list_only"
               sequence="0"/>
 
+    <!-- Expanded-access entry point (see project_task_views.xml): sequence="1" keeps
+         "All Tasks" (sequence="0") as the default landing menu, unchanged. -->
+    <menuitem id="menu_task_product_development_restricted"
+              name="Project"
+              parent="project.menu_main_pm"
+              action="action_server_task_product_development_restricted"
+              groups="group_project_task_list_only"
+              sequence="1"/>
+
     <!-- Explicit-whitelist replace (verified against the live database in T005 - see
          research.md §2/contracts/module-interface.md): menu_projects, menu_project_report
          and menu_project_management_all_tasks currently have NO groups set (visible to any

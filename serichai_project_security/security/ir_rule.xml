@@ -1,9 +1,30 @@
 <odoo>
+    <!-- 2026-10-01 (spec 006 FR-007): tasks in the expanded-access project bypass the stage
+         filter, so the restricted role sees every task of that one project in every stage
+         (needed for its Kanban board, see project_task_views.xml). Every other project keeps
+         the Production Planning stage filter unchanged. -->
     <record id="rule_task_stage_restricted" model="ir.rule">
-        <field name="name">Restricted user: only Production Planning stage</field>
+        <field name="name">Restricted user: only Production Planning stage (except expanded-access project)</field>
         <field name="model_id" ref="project.model_project_task"/>
-        <field name="domain_force">[('stage_id.name', 'in', ['วางแผนการผลิต', 'กำลังผลิตสินค้า', 'เตรียมส่งสินค้า', 'เสร็จสิ้น'])] if user.has_group('serichai_project_security.group_project_task_list_only') else [(1, '=', 1)]</field>
+        <field name="domain_force">['|', ('is_expanded_access_task', '=', True), ('stage_id.name', 'in', ['วางแผนการผลิต', 'กำลังผลิตสินค้า', 'เตรียมส่งสินค้า', 'เสร็จสิ้น'])] if user.has_group('serichai_project_security.group_project_task_list_only') else [(1, '=', 1)]</field>
         <field name="groups" eval="[(5, 0, 0)]"/>
     </record>
-   
+
+    <!-- Write access for the restricted role is confined to tasks in the project an
+         administrator has pinned via Settings > Project (see is_expanded_access_task on
+         project.task). perm_read/perm_create/perm_unlink are explicitly False here so this
+         rule only narrows perm_write - read stays governed by rule_task_stage_restricted
+         above, and create/unlink stay blocked entirely via ir.model.access.csv regardless of
+         this rule. See specs/006-product-dev-task-access/research.md Decision 2. -->
+    <record id="rule_task_write_pinned_project" model="ir.rule">
+        <field name="name">Restricted user: write only tasks in the expanded-access project</field>
+        <field name="model_id" ref="project.model_project_task"/>
+        <field name="domain_force">[('is_expanded_access_task', '=', True)]</field>
+        <field name="groups" eval="[(4, ref('group_project_task_list_only'))]"/>
+        <field name="perm_read">0</field>
+        <field name="perm_write">1</field>
+        <field name="perm_create">0</field>
+        <field name="perm_unlink">0</field>
+    </record>
+
 </odoo>
