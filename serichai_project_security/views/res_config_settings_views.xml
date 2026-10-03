@@ -8,7 +8,7 @@
                 <block title="Task List Viewer Role" id="serichai_project_security_expanded_access">
                     <setting
                         id="serichai_expanded_access_project_setting"
-                        help="Users with only the 'Task List Viewer (Production Planning Only)' role may open the task form and edit existing tasks in this project. Every other project keeps their normal read-only, list-only access."
+                        help="Users with only the 'Task List Viewer (Production Planning Only)' role may open the task form (from All Tasks or the project menu) and edit existing tasks in this project. Every other project keeps their normal read-only, list-only access."
                     >
                         <field name="serichai_expanded_access_project_id"/>
                     </setting>

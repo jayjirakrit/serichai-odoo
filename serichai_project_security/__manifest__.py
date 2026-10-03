@@ -2,7 +2,7 @@
 {
     'name': 'Serichai Project Security',
     'summary': 'Restrict a role to a read-only, filtered, list-only view of Project tasks',
-    'version': '1.0.0',
+    'version': '1.1.0',
     'category': 'Project',
     'description': """
 Adds a restricted role ("Task List Viewer (Production Planning Only)") that can only see
@@ -10,8 +10,9 @@ project tasks in the Production Planning stage, in a list-only view with no Tags
 no access to task forms. Projects / Reporting / Configuration menus are hidden for this role.
 
 An administrator may pin one exception project (Settings > Project > "Task List Viewer Role"):
-members of the restricted role may open the task form and edit existing tasks belonging to
-that one project only. In that project the stage filter does not apply: its "Product
+members of the restricted role may open the task form (from "All Tasks" or the project's own
+menu) and edit existing tasks belonging to that one project only; other rows of "All Tasks"
+cannot be opened. In that project the stage filter does not apply: its "Product
 Development" menu opens a Kanban board with every stage of the project as a column (list and
 form also available). Create/delete stay blocked everywhere, including in the pinned project.
     """,
@@ -25,6 +26,11 @@ form also available). Create/delete stay blocked everywhere, including in the pi
         'views/project_task_property_access_views.xml',
         'views/res_config_settings_views.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'serichai_project_security/static/src/views/restricted_task_list.js',
+        ],
+    },
     'installable': True,
     'author': 'Serichai Group',
     'license': 'AGPL-3',
