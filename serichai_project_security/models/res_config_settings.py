@@ -10,7 +10,7 @@ class ResConfigSettings(models.TransientModel):
         config_parameter='serichai_project_security.expanded_access_project_id',
         help=(
             "Members of the 'Task List Viewer (Production Planning Only)' role can open the "
-            "task form and edit existing tasks in this project only. Every other project keeps "
+            "task form (from All Tasks or the project menu) and edit existing tasks in this project only. Every other project keeps "
             "their normal read-only, list-only access."
         ),
     )

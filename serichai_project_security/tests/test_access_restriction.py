@@ -1,3 +1,6 @@
+from types import SimpleNamespace
+from unittest.mock import patch
+
 from lxml import etree
 
 from odoo.exceptions import AccessError
@@ -5,6 +8,7 @@ from odoo.tests import tagged, new_test_user
 from odoo.tests.common import TransactionCase
 
 TARGET_STAGE_NAME = 'วางแผนการผลิต'
+REQUEST_PATH = 'odoo.addons.serichai_project_security.models.project_task.request'
 
 
 @tagged('post_install', '-at_install')
@@ -186,6 +190,68 @@ class TestTaskAccessRestriction(TransactionCase):
         Task = self.env['project.task'].with_user(self.restricted_user)
         with self.assertRaises(AccessError):
             Task.browse(self.task_pinned.id).write({'name': 'Attempted Edit'})
+
+    def _rpc_request(self, method):
+        # Stand-in for the JSON-RPC request the web client sends (call_kw / json2 both expose
+        # the top-level model and method in request.params).
+        return patch(REQUEST_PATH, SimpleNamespace(params={'model': 'project.task', 'method': method}))
+
+    def test_all_tasks_action_has_form_view(self):
+        # 2026-10-03: "All Tasks" can now switch to the form (for pinned-project rows only).
+        action = self.env.ref('serichai_project_security.action_task_all_restricted')
+        self.assertEqual(action.view_mode, 'list,form')
+
+    def test_restricted_list_uses_gating_controller(self):
+        view = self.env.ref('serichai_project_security.view_task_list_restricted')
+        result = self.env['project.task'].with_user(self.restricted_user).get_view(
+            view_id=view.id, view_type='list',
+        )
+        arch = etree.fromstring(result['arch'])
+        self.assertEqual(arch.get('js_class'), 'serichai_restricted_task_list')
+        self.assertEqual(arch.get('create'), '0')
+        self.assertEqual(arch.get('delete'), '0')
+        node = arch.find(".//field[@name='is_expanded_access_task']")
+        self.assertIsNotNone(node, 'the client needs is_expanded_access_task to gate row opening')
+        self.assertEqual(node.get('column_invisible'), '1')
+
+    def test_restricted_user_form_load_allowed_in_pinned_project(self):
+        Task = self.env['project.task'].with_user(self.restricted_user)
+        with self._rpc_request('web_read'):
+            [vals] = Task.browse(self.task_pinned.id).web_read({'name': {}})
+        self.assertEqual(vals['name'], self.task_pinned.name)
+
+    def test_restricted_user_form_load_denied_outside_pinned_project(self):
+        Task = self.env['project.task'].with_user(self.restricted_user)
+        with self._rpc_request('web_read'), self.assertRaises(AccessError):
+            Task.browse(self.task_target.id).web_read({'name': {}})
+
+    def test_restricted_user_list_read_unaffected_by_form_guard(self):
+        # web_search_read calls web_read internally; the guard must not break the list.
+        Task = self.env['project.task'].with_user(self.restricted_user)
+        with self._rpc_request('web_search_read'):
+            result = Task.web_search_read([], {'name': {}, 'is_expanded_access_task': {}})
+        ids = {rec['id'] for rec in result['records']}
+        self.assertIn(self.task_target.id, ids)
+        self.assertIn(self.task_pinned.id, ids)
+
+    def test_restricted_user_can_read_every_field_of_task_form(self):
+        # 2026-10-03: opening a pinned task failed with "Failed to read field
+        # project.task.role_ids" - the default task form reads relational fields whose comodel
+        # (project.role, project.task.recurrence) the role had no ACL on. Read every field the
+        # form view exposes to this user, as the web client does.
+        Task = self.env['project.task'].with_user(self.restricted_user)
+        form_fields = Task.get_view(view_type='form')['models']['project.task']
+        spec = {
+            name: {'fields': {'display_name': {}}} if Task._fields[name].relational else {}
+            for name in form_fields
+        }
+        with self._rpc_request('web_read'):
+            Task.browse(self.task_pinned.id).web_read(spec)  # must not raise
+
+    def test_project_user_form_load_unaffected(self):
+        Task = self.env['project.task'].with_user(self.control_user)
+        with self._rpc_request('web_read'):
+            Task.browse(self.task_target.id).web_read({'name': {}})  # must not raise
 
     def test_restricted_list_hides_tags_column(self):
         view = self.env.ref('serichai_project_security.view_task_list_restricted')

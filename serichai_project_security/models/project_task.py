@@ -1,5 +1,7 @@
 from odoo import api, fields, models
+from odoo.exceptions import AccessError
 from odoo.fields import Domain
+from odoo.http import request
 
 
 class ProjectTask(models.Model):
@@ -65,6 +67,27 @@ class ProjectTask(models.Model):
             # record itself (e.g. a followers-only project).
             action['display_name'] = self.env['project.project'].sudo().browse(pinned_id).display_name
         return action
+
+    def _is_restricted_form_load(self):
+        """True when a Task List Viewer (and not a regular project user) loads tasks through a
+        direct ``project.task.web_read`` RPC - i.e. a task form (deep link, pager, list click).
+        web_read is also called internally by web_search_read, web_read_group, web_name_search
+        and co-record reads, so the top-level RPC method is checked instead of guarding every
+        web_read - see specs/006-product-dev-task-access/research.md Decision 3."""
+        if self.env.su or not request:
+            return False
+        user = self.env.user
+        if not user.has_group('serichai_project_security.group_project_task_list_only'):
+            return False
+        if user.has_group('project.group_project_user'):
+            return False
+        params = request.params or {}
+        return params.get('model') == self._name and params.get('method') == 'web_read'
+
+    def web_read(self, specification):
+        if self._is_restricted_form_load() and self.filtered(lambda t: not t.is_expanded_access_task):
+            raise AccessError(self.env._("You can only open tasks of the project allowed for your role."))
+        return super().web_read(specification)
 
     def read(self, fields=None, load='_classic_read'):
         result = super().read(fields=fields, load=load)
