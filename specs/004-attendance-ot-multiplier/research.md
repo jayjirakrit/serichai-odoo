@@ -1,0 +1,48 @@
+# Phase 0 Research: Multi-Rate Overtime Calculation for Attendance
+
+## Decision 1: Do not build on core's `hr.attendance.overtime.rule`/`ruleset` engine
+
+**Decision**: Build a new, independent model (`hr.attendance.ot.rule`) and new stored fields on `hr.attendance`, rather than extending or repurposing Odoo 19's existing `hr.attendance.overtime.rule` / `hr.attendance.overtime.ruleset` / `hr.attendance.overtime.line` models (found in `odoo/addons/hr_attendance/models/hr_attendance_overtime_rule.py` and `hr_attendance_overtime_ruleset.py`).
+
+**Rationale**: The original feature brief's framing ("Odoo Community's native attendance overtime logic only supports a single flat overtime bucket") turned out to understate what this Odoo 19 vendor tree actually ships — core already has a configurable rule engine with `timing_type` (time-of-day windows) or `quantity`-based rules, per-rule `amount_rate`, `sequence`, and a `resource_calendar_id` scope. However, it fundamentally computes a *single* overtime concept (a pool of `hr.attendance.overtime.line` records with a rate, feeding `overtime_hours`/`validated_overtime_hours`) layered on top of a resource-calendar's expected schedule — not three independently named, always-stored, directly reportable buckets (Normal / OT 1.5x / OT 2x) that must appear as their own list/pivot/export columns per FR-016–FR-019, with this feature's specific "catch outside 08:00–22:00" and "unpaid gap" semantics (FR-006, FR-010, FR-011) and its own wage-type/day-type axis that core has no concept of. Bending core's engine to produce this shape would mean fighting its data model rather than using it, and would create two competing "true" overtime numbers on the same record. Keeping the two systems parallel and independent avoids that ambiguity: core's overtime-approval workflow is untouched and out of scope; this feature adds its own clearly-separate fields.
+
+**Alternatives considered**:
+- *Extend `hr.attendance.overtime.rule` with wage_type/day_type/pay_type fields and reuse its interval logic.* Rejected — its interval/schedule logic is built around `resource.calendar` expected-hours comparison and a single blended overtime duration; retrofitting three independently-labeled pay buckets and this feature's exact catch-outside/gap semantics onto it is a bigger, riskier change than a small parallel model, for no reuse benefit big enough to justify entangling with core's approval workflow.
+- *Disable/replace core's overtime fields with this feature's buckets.* Rejected — out of spec scope (spec's Assumptions explicitly says this feature "does not perform any actual payroll pay-run calculation"), and would be a much larger, riskier change than what was asked for.
+
+## Decision 2: Public holiday source is `resource.calendar.leaves`, not `hr.holidays.public.line`
+
+**Decision**: Day-type detection for "Holiday" uses calendar-wide leave records — `resource.calendar.leaves` rows with `resource_id` empty (i.e., not tied to one specific employee/resource), exposed on `resource.calendar` as the computed `global_leave_ids` field — scoped to the employee's `resource_calendar_id`. A date counts as a holiday if it falls within any such record's `date_from`/`date_to` range (compared in the calendar's timezone).
+
+**Rationale**: The feature brief named a model, `hr.holidays.public.line`, that does not exist anywhere in this vendored Odoo 19 tree (confirmed by search — no `hr_holidays_public` addon is present). This codebase's actual mechanism for "days nobody at this calendar is expected to work, company/calendar-wide" is `resource.calendar.leaves` with an empty `resource_id` (a global/company leave, as opposed to a personal time-off leave which sets `resource_id`). This is also the exact mechanism core's own `hr.attendance.overtime.rule._get1_timing_overtime_intervals` and its tests (`test_overtime_with_public_holidays`) already use to represent public holidays, so this feature stays consistent with the rest of the codebase instead of introducing a second, competing holiday-storage convention.
+
+**Alternatives considered**:
+- *Introduce a new `hr.holidays.public.line`-like model as originally named.* Rejected — would duplicate data entry (holidays would need to be entered twice: once in `resource.calendar.leaves` for scheduling purposes, once in a new model for this feature) and diverge from the codebase's existing single source of truth for holidays.
+
+## Decision 3: `day_type` on `hr.attendance` reflects the check-in date; hour computation splits internally
+
+**Decision**: The stored `day_type` Selection field on `hr.attendance` is set from the **check-in date's** day type, used for list/pivot grouping and display (a single record needs a single label for reporting per spec's Key Entities). The actual Normal/OT 1.5x/OT 2x hour computation is not limited by this label — internally, an overnight shift is split into per-calendar-date segments (per the user-confirmed "split at midnight" resolution in spec.md), and each segment is matched against the rules for *its own* date's day type, before the results are summed into the record's three stored totals.
+
+**Rationale**: `day_type` as specified is a single Selection field (weekday/sunday_holiday) — it cannot represent "this record is half weekday, half Sunday" without becoming a different shape (e.g., a one2many of segments), which the spec does not ask for and which would complicate the list/pivot views FR-016–FR-018 explicitly ask for. Using the check-in date keeps the field meaningful for "which shift did this start as" reporting, while the actual money math (the part that must be correct per SC-003) is computed correctly per-segment regardless of what the single label says.
+
+**Alternatives considered**:
+- *Use the check-out date's day type for the whole record.* Rejected — arbitrary in the other direction; check-in date is the more natural "which day is this attendance" label since that's how shifts are conventionally referenced.
+- *Add a per-segment child model.* Rejected — not requested by the spec, adds UI/reporting complexity beyond FR-016–FR-018's scope.
+
+## Decision 4: Field-naming / view-insertion mapping onto real Odoo 19 field names
+
+**Decision**: The list-view insertion point named generically in spec.md FR-016 ("immediately after the existing extra-hours column") maps to the concrete field `overtime_hours` (UI label **"Worked Extra Hours"**) in `hr_attendance.view_attendance_tree`, i.e., the three new hour columns and `day_type` are inserted between `overtime_hours` and `validated_overtime_hours` (label "Extra Hours"). Odoo 19's list-view summation attribute is `sum="Total"` (already used by all three new hour fields per spec FR-016), and its field-level aggregation attribute for stored Float fields is `aggregator="sum"` (not the older `group_operator`, which this codebase's own `expected_hours` field on `hr.attendance` already uses as the current convention).
+
+**Rationale**: The original feature brief's own field name (`worked_extra_hours`) does not exist as a literal field on `hr.attendance` in this Odoo 19 tree — the field carrying that exact UI label ("Worked Extra Hours") is named `overtime_hours`. Matching on the label rather than a nonexistent field name is the only way to satisfy the intent of FR-016 in the actual codebase.
+
+## Decision 5: 30-minute-down rounding is applied once, per bucket, per record
+
+**Decision**: Rounding (FR-006 — round each pay category's total down to the nearest 30 minutes, dropping any remainder under 30 minutes) is applied as the last step of the compute method, to each of the three summed bucket totals on the record — not to individual rule-window overlaps or per-segment sub-totals before they're combined.
+
+**Rationale**: Rounding intermediate values before summing could shift totals unpredictably when a shift touches a rule window across two segments (e.g., an overnight shift with OT 1.5x time on both sides of midnight); rounding only the final per-record, per-category total matches how a payroll clerk would read "this record's OT 1.5x total," and matches the Assumptions note already recorded in spec.md.
+
+## Decision 6: Backfill via explicit `post_init_hook`, in batches
+
+**Decision**: Add a `post_init_hook` in `__manifest__.py` that searches all existing `hr.attendance` records in batches (e.g., 1000 at a time) and forces recomputation of the four new fields, rather than relying solely on Odoo's implicit "new stored compute field gets computed for existing rows on module install" behavior.
+
+**Rationale**: That implicit behavior is real in most cases, but making the backfill an explicit, testable, batched step is what SC-005 ("100% of records ... show correct, non-blank computed pay-category values after installation completes") and FR-020 ask for, and it's the safer, verifiable choice for a table that could be large. Each batch is flushed (`env.flush_all()`) before moving to the next, keeping peak memory/query size bounded for instances with a lot of historical attendance data; it deliberately does **not** call `cr.commit()` mid-loop — Odoo's other `post_init_hook`s in this codebase (e.g. `hr_attendance`'s own) don't either, and an explicit intermediate commit is actively incompatible with `TransactionCase`-based unit testing (Odoo's test framework patches `cr.commit()` to raise, precisely so a test's changes stay rollback-able) — so the batching's purpose here is bounded per-batch work, not shorter lock duration. The whole hook still runs inside the single transaction the installer commits at the end, same as any other `post_init_hook`.

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_attendance_tree_ot_hours" model="ir.ui.view">
+        <field name="name">hr.attendance.list.ot.hours</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+        <field name="arch" type="xml">
+            <field name="overtime_hours" position="after">
+                <field name="normal_hours" widget="float_time" optional="show" sum="Total"/>
+                <field name="overtime_150_hours" widget="float_time" optional="show" sum="Total"/>
+                <field name="overtime_200_hours" widget="float_time" optional="show" sum="Total"/>
+                <field name="day_type" optional="hide"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_hr_attendance_ot_pivot" model="ir.ui.view">
+        <field name="name">hr.attendance.ot.pivot</field>
+        <field name="model">hr.attendance</field>
+        <field name="arch" type="xml">
+            <pivot string="OT Analysis">
+                <field name="employee_id" type="row"/>
+                <field name="day_type" type="row"/>
+                <field name="normal_hours" type="measure" widget="float_time"/>
+                <field name="overtime_150_hours" type="measure" widget="float_time"/>
+                <field name="overtime_200_hours" type="measure" widget="float_time"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_hr_attendance_ot_analysis" model="ir.actions.act_window">
+        <field name="name">OT Analysis</field>
+        <field name="res_model">hr.attendance</field>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="view_hr_attendance_ot_pivot"/>
+    </record>
+
+    <menuitem id="menu_hr_attendance_ot_analysis"
+              name="OT Analysis"
+              action="action_hr_attendance_ot_analysis"
+              parent="hr_attendance.menu_hr_attendance_reporting"
+              groups="hr_attendance.group_hr_attendance_officer"
+              sequence="20"/>
+</odoo>

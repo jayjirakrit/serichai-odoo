@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_attendance_ot_rule_list" model="ir.ui.view">
+        <field name="name">hr.attendance.ot.rule.list</field>
+        <field name="model">hr.attendance.ot.rule</field>
+        <field name="arch" type="xml">
+            <list string="Overtime Rules" default_order="wage_type, day_type, sequence">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="wage_type"/>
+                <field name="day_type"/>
+                <field name="time_from" widget="float_time"/>
+                <field name="time_to" widget="float_time"/>
+                <field name="pay_type"/>
+                <field name="catch_outside"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_attendance_ot_rule_form" model="ir.ui.view">
+        <field name="name">hr.attendance.ot.rule.form</field>
+        <field name="model">hr.attendance.ot.rule</field>
+        <field name="arch" type="xml">
+            <form string="Overtime Rule">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="wage_type"/>
+                            <field name="day_type"/>
+                            <field name="pay_type"/>
+                        </group>
+                        <group>
+                            <field name="time_from" widget="float_time"/>
+                            <field name="time_to" widget="float_time"/>
+                            <field name="catch_outside"/>
+                            <field name="sequence"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_attendance_ot_rule" model="ir.actions.act_window">
+        <field name="name">Overtime Rules</field>
+        <field name="res_model">hr.attendance.ot.rule</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!--
+        Not nested under hr_attendance.menu_hr_attendance_configuration: that parent
+        menu is restricted to group_hr_attendance_manager only, which would hide this
+        item from Officers even though they have full CRUD on the model (per the
+        explicit decision to open rule management to Officers, not just Managers).
+        Placed as a sibling of Configuration under the Attendances root instead, with
+        groups covering both.
+    -->
+    <menuitem id="menu_hr_attendance_ot_rule"
+              name="Overtime Rules"
+              action="action_hr_attendance_ot_rule"
+              parent="hr_attendance.menu_hr_attendance_root"
+              groups="hr_attendance.group_hr_attendance_officer,hr_attendance.group_hr_attendance_manager"
+              sequence="7"/>
+</odoo>

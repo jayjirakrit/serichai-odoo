@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- Daily Paid -->
+    <record id="ot_rule_daily_weekday_normal" model="hr.attendance.ot.rule">
+        <field name="name">Daily Paid - Weekday - Normal</field>
+        <field name="wage_type">daily</field>
+        <field name="day_type">weekday</field>
+        <field name="sequence">10</field>
+        <field name="time_from">8.0</field>
+        <field name="time_to">17.0</field>
+        <field name="pay_type">normal</field>
+        <field name="catch_outside">False</field>
+    </record>
+
+    <record id="ot_rule_daily_weekday_ot150" model="hr.attendance.ot.rule">
+        <field name="name">Daily Paid - Weekday - OT 1.5x</field>
+        <field name="wage_type">daily</field>
+        <field name="day_type">weekday</field>
+        <field name="sequence">20</field>
+        <field name="time_from">18.0</field>
+        <field name="time_to">22.0</field>
+        <field name="pay_type">ot150</field>
+        <field name="catch_outside">True</field>
+    </record>
+
+    <record id="ot_rule_daily_sunday_normal" model="hr.attendance.ot.rule">
+        <field name="name">Daily Paid - Sunday/Holiday - Normal</field>
+        <field name="wage_type">daily</field>
+        <field name="day_type">sunday_holiday</field>
+        <field name="sequence">10</field>
+        <field name="time_from">8.0</field>
+        <field name="time_to">12.0</field>
+        <field name="pay_type">normal</field>
+        <field name="catch_outside">False</field>
+    </record>
+
+    <record id="ot_rule_daily_sunday_ot200" model="hr.attendance.ot.rule">
+        <field name="name">Daily Paid - Sunday/Holiday - OT 2x</field>
+        <field name="wage_type">daily</field>
+        <field name="day_type">sunday_holiday</field>
+        <field name="sequence">20</field>
+        <field name="time_from">12.5</field>
+        <field name="time_to">16.5</field>
+        <field name="pay_type">ot200</field>
+        <field name="catch_outside">False</field>
+    </record>
+
+    <!-- Monthly Paid -->
+    <record id="ot_rule_monthly_weekday_normal" model="hr.attendance.ot.rule">
+        <field name="name">Monthly Paid - Weekday - Normal</field>
+        <field name="wage_type">monthly</field>
+        <field name="day_type">weekday</field>
+        <field name="sequence">10</field>
+        <field name="time_from">8.0</field>
+        <field name="time_to">17.0</field>
+        <field name="pay_type">normal</field>
+        <field name="catch_outside">False</field>
+    </record>
+
+    <record id="ot_rule_monthly_weekday_ot150" model="hr.attendance.ot.rule">
+        <field name="name">Monthly Paid - Weekday - OT 1.5x</field>
+        <field name="wage_type">monthly</field>
+        <field name="day_type">weekday</field>
+        <field name="sequence">20</field>
+        <field name="time_from">18.0</field>
+        <field name="time_to">22.0</field>
+        <field name="pay_type">ot150</field>
+        <field name="catch_outside">True</field>
+    </record>
+
+    <record id="ot_rule_monthly_sunday_normal" model="hr.attendance.ot.rule">
+        <field name="name">Monthly Paid - Sunday/Holiday - Normal</field>
+        <field name="wage_type">monthly</field>
+        <field name="day_type">sunday_holiday</field>
+        <field name="sequence">10</field>
+        <field name="time_from">8.0</field>
+        <field name="time_to">16.5</field>
+        <field name="pay_type">normal</field>
+        <field name="catch_outside">False</field>
+    </record>
+
+    <record id="ot_rule_monthly_sunday_ot200" model="hr.attendance.ot.rule">
+        <field name="name">Monthly Paid - Sunday/Holiday - OT 2x</field>
+        <field name="wage_type">monthly</field>
+        <field name="day_type">sunday_holiday</field>
+        <field name="sequence">20</field>
+        <field name="time_from">16.5</field>
+        <field name="time_to">24.0</field>
+        <field name="pay_type">ot200</field>
+        <field name="catch_outside">True</field>
+    </record>
+
+</odoo>
