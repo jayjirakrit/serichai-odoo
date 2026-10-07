@@ -1,0 +1,73 @@
+<!-- Mail template "E-Bidding Has Started" (model: project.task). Paste into the template Body in code view. -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%" style="padding:24px 0;font-family:'Segoe UI',Arial,sans-serif;">
+<tbody><tr><td align="center" style="background-color:#f3f4f6;">
+  <table border="0" cellpadding="0" cellspacing="0" width="800" style="max-width:800px;border:1px solid #e5e7eb;border-collapse:collapse;font-family:'Segoe UI',Arial,sans-serif;">
+    <tbody>
+    <tr>
+      <td style="background-color:#1f3a5f;padding:20px 28px;">
+        <div style="font-size:12px;letter-spacing:1px;color:#b8c7dc;text-transform:uppercase;">Serichai Group · Contract Management</div>
+        <div style="padding-top:6px;font-size:22px;font-weight:bold;color:#ffffff;">E-Bidding Has Started</div>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:24px 28px 8px;font-size:14px;line-height:1.6;color:#111827;background-color:#ffffff;">
+        Dear Management Team,<br/><br/>
+        This is to inform you that the e-bidding process for the following contract has officially started in Odoo.
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:12px 28px;background-color:#ffffff;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border:1px solid #e5e7eb;border-left:4px solid #1f3a5f;border-collapse:collapse;">
+          <tbody>
+          <tr>
+            <td width="35%" style="padding:10px 14px;font-size:13px;color:#6b7280;border-bottom:1px solid #e5e7eb;">Project</td>
+            <td style="padding:10px 14px;font-size:14px;font-weight:bold;color:#111827;border-bottom:1px solid #e5e7eb;"><t t-out="object.project_id.name or '-'"></t></td>
+          </tr>
+          <tr>
+            <td style="padding:10px 14px;font-size:13px;color:#6b7280;border-bottom:1px solid #e5e7eb;">Contract Number</td>
+            <td style="padding:10px 14px;font-size:14px;font-weight:bold;color:#111827;border-bottom:1px solid #e5e7eb;"><t t-out="object.name or '-'"></t></td>
+          </tr>
+          <tr>
+            <td style="padding:10px 14px;font-size:13px;color:#6b7280;border-bottom:1px solid #e5e7eb;">Bidding Deadline</td>
+            <td style="padding:10px 14px;font-size:14px;font-weight:bold;color:#b91c1c;border-bottom:1px solid #e5e7eb;"><t t-if="object.date_deadline" t-out="object.date_deadline" t-options="{'widget': 'datetime'}"></t><t t-else="">To be confirmed</t></td>
+          </tr>
+          <tr>
+            <td style="padding:10px 14px;font-size:13px;color:#6b7280;border-bottom:1px solid #e5e7eb;">Status</td>
+            <td style="padding:10px 14px;font-size:14px;color:#111827;border-bottom:1px solid #e5e7eb;"><t t-out="object.stage_id.name"></t></td>
+          </tr>
+          <tr>
+            <td style="padding:10px 14px;font-size:13px;color:#6b7280;">Created by</td>
+            <td style="padding:10px 14px;font-size:14px;color:#111827;"><t t-out="object.create_uid.name"></t></td>
+          </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:8px 28px 4px;font-size:14px;line-height:1.6;color:#111827;background-color:#ffffff;">
+        <strong>What happens next</strong>
+        <ul style="list-style-type:disc;margin:6px 0 0 18px;padding:0;color:#374151;">
+          <li>Management will be notified once bids are received for review.</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" style="padding:20px 28px 24px;background-color:#ffffff;">
+        <table border="0" cellpadding="0" cellspacing="0"><tbody><tr>
+          <td align="center" bgcolor="#1f3a5f" style="background-color:#1f3a5f;">
+            <a t-attf-href="{{ object.get_base_url() }}/odoo/action-project.action_view_all_task/{{ object.id }}" style="display:inline-block;padding:12px 28px;font-size:14px;font-weight:bold;text-decoration:none;color:#ffffff;font-family:'Segoe UI',Arial,sans-serif;">View Contract in Odoo</a>
+          </td>
+        </tr></tbody></table>
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color:#ffffff;padding:16px 28px;font-size:12px;color:#6b7280;line-height:1.5;border-top:1px solid #e5e7eb;">
+        Best regards,<br/>
+        <strong>Serichai Company</strong><br/>
+        This is an automated notification from Odoo. Please do not reply to this email.
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</td></tr></tbody>
+</table>

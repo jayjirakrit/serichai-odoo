@@ -233,3 +233,50 @@ Fixes:
 - **Key rotation**: generate a new Brevo SMTP key, paste it into the server, run Test Connection,
   then delete the old key.
 - **Aliases**: repeat A6 after installing any module.
+
+---
+
+## Part C: Email templates
+
+Templates live in **Settings → Technical → Email → Email Templates** (developer mode). The HTML
+body is kept in this repo under `templates/` so it can be re-created on another database.
+
+### C1. E-Bidding Has Started
+
+Tells management that the e-bidding of a contract has begun. Body: `templates/e-bidding-started.html`
+(the pasted design with the inline-style noise removed; same look).
+
+| Field | Value |
+|---|---|
+| Name | `E-Bidding Has Started` |
+| Model (Applies to) | Task (`project.task`) |
+| Subject | `E-Bidding Has Started: {{ object.name }}` (suggested) |
+| From | leave empty to use the company email (A4 / B7) |
+| To | the Management Team recipients (to be decided) |
+| Reply-To | leave empty; the footer says "do not reply" |
+| Auto Delete | on |
+
+Fields rendered from the task (`object`):
+
+| Row in email | Expression | Fallback |
+|---|---|---|
+| Project | `object.project_id.name` | `-` |
+| Contract Number | `object.name` | `-` |
+| Bidding Deadline (red) | `object.date_deadline`, datetime widget | `To be confirmed` |
+| Status | `object.stage_id.name` | none |
+| Created by | `object.create_uid.name` | none |
+| Button "View Contract in Odoo" | `{{ object.get_base_url() }}/odoo/action-project.action_view_all_task/{{ object.id }}` | none |
+
+Layout: dark blue (`#1f3a5f`) header band "Serichai Group · Contract Management", greeting, a
+bordered detail table, a "What happens next" bullet ("Management will be notified once bids are
+received for review."), the button, and the "Best regards, Serichai Company" automated-notice footer.
+Width 800 px, system font stack, table-based so it renders in Outlook and Gmail.
+
+Notes:
+- The Status row shows the task stage name. The button opens the task through the **All Tasks**
+  action, so restricted-role users (spec 001/007) can open it only if the task is pinned.
+- Keep the `t-out`, `t-if`, `t-else` and `t-attf-href` attributes when editing the body in the
+  visual editor; use **code view** to avoid the editor rewriting them.
+- Still open: what triggers the email (stage change, button or automation rule) and who the
+  Management Team recipients are.
+- Send a test to your own mailbox first (A9) and check it in Gmail and Outlook.
