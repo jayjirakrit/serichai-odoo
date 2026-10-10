@@ -1,0 +1,51 @@
+<odoo>
+    <!-- Global rules (no groups): they narrow every other rule. Unrestricted users get
+         Domain.TRUE from the search methods. -->
+    <record id="project_task_rule_access_read" model="ir.rule">
+        <field name="name">Project access: read only visible tasks</field>
+        <field name="model_id" ref="project.model_project_task"/>
+        <field name="domain_force">[('access_task_visible', '=', True)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="project_task_rule_access_write" model="ir.rule">
+        <field name="name">Project access: write and create only in Write projects</field>
+        <field name="model_id" ref="project.model_project_task"/>
+        <field name="domain_force">[('access_task_writable', '=', True)]</field>
+        <field name="perm_read" eval="False"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Core gives plain internal users (base.group_user) only a group rule limited to private
+         tasks (no project) for write/create. Without a group rule of its own, the restricted
+         group could never write a project task whatever the global rules say. This group rule
+         widens to every project task (private tasks stay with core's own-task rule);
+         the global rule above then narrows it to Write projects. -->
+    <record id="project_task_rule_access_group_write" model="ir.rule">
+        <field name="name">Project access: restricted group may write (narrowed by global rule)</field>
+        <field name="model_id" ref="project.model_project_task"/>
+        <field name="domain_force">[('project_id', '!=', False)]</field>
+        <field name="groups" eval="[(4, ref('serichai_project_access_group_restricted'))]"/>
+        <field name="perm_read" eval="False"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- The only rule testing the group: project_todo gives base.group_user unlink on tasks. Only
+         private tasks (no project) stay deletable, and then only the user's own (core rule). -->
+    <record id="project_task_rule_access_unlink" model="ir.rule">
+        <field name="name">Project access: restricted users cannot delete tasks</field>
+        <field name="model_id" ref="project.model_project_task"/>
+        <field name="domain_force">[('project_id', '=', False)] if user.has_group('serichai_project_access.serichai_project_access_group_restricted') and not user.has_group('project.group_project_user') else [(1, '=', 1)]</field>
+        <field name="perm_read" eval="False"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+</odoo>

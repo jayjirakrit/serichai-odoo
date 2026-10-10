@@ -1,0 +1,73 @@
+<odoo>
+    <record id="project_task_view_list_access" model="ir.ui.view">
+        <field name="name">project.task.list.access</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_tree2"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <list position="attributes">
+                <attribute name="js_class">serichai_access_task_list</attribute>
+                <attribute name="create">0</attribute>
+                <attribute name="delete">0</attribute>
+                <attribute name="decoration-muted">not access_task_detail</attribute>
+            </list>
+            <!-- No Tags column for restricted users (spec 001 FR-006) -->
+            <field name="tag_ids" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </field>
+            <field name="tag_ids" position="after">
+                <field name="access_task_detail" column_invisible="1"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="project_task_view_kanban_access" model="ir.ui.view">
+        <field name="name">project.task.kanban.access</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_kanban"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <kanban position="attributes">
+                <attribute name="js_class">serichai_access_task_kanban</attribute>
+                <attribute name="create">0</attribute>
+                <attribute name="delete">0</attribute>
+                <attribute name="quick_create">0</attribute>
+                <attribute name="group_create">0</attribute>
+                <attribute name="group_edit">0</attribute>
+                <attribute name="group_delete">0</attribute>
+            </kanban>
+            <kanban position="inside">
+                <field name="access_task_detail"/>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="project_task_action_access_all" model="ir.actions.act_window">
+        <field name="name">All Tasks</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="project_task_view_list_access"/>
+        <field name="search_view_id" ref="project.view_task_search_form"/>
+    </record>
+
+    <record id="project_task_action_access_project" model="ir.actions.act_window">
+        <field name="name">Project</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="project.view_task_search_form"/>
+    </record>
+
+    <record id="project_task_action_access_project_view_kanban" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="project_task_view_kanban_access"/>
+        <field name="act_window_id" ref="project_task_action_access_project"/>
+    </record>
+
+    <record id="project_task_action_access_project_view_list" model="ir.actions.act_window.view">
+        <field name="sequence">2</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="project_task_view_list_access"/>
+        <field name="act_window_id" ref="project_task_action_access_project"/>
+    </record>
+</odoo>

@@ -1,0 +1,13 @@
+<odoo>
+    <!-- Global rule (no groups): narrows. Unrestricted users get Domain.TRUE from the search
+         method. No write/create/unlink rule: restricted users have read-only ACL on projects. -->
+    <record id="project_project_rule_access_read" model="ir.rule">
+        <field name="name">Project access: read only granted projects</field>
+        <field name="model_id" ref="project.model_project_project"/>
+        <field name="domain_force">[('access_can_read', '=', True)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+</odoo>

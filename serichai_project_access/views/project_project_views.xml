@@ -1,0 +1,31 @@
+<odoo>
+    <!-- Stock project cards (click opens the project's tasks via action_view_tasks, overridden
+         for restricted users); no create/edit/delete. -->
+    <record id="project_project_view_kanban_access" model="ir.ui.view">
+        <field name="name">project.project.kanban.access</field>
+        <field name="model">project.project</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="project.view_project_kanban"/>
+        <field name="arch" type="xml">
+            <kanban position="attributes">
+                <attribute name="create">0</attribute>
+                <attribute name="edit">0</attribute>
+                <attribute name="delete">0</attribute>
+                <attribute name="quick_create">0</attribute>
+                <attribute name="group_create">0</attribute>
+                <attribute name="group_edit">0</attribute>
+                <attribute name="group_delete">0</attribute>
+                <attribute name="on_create"></attribute>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="project_project_action_access" model="ir.actions.act_window">
+        <field name="name">Project</field>
+        <field name="res_model">project.project</field>
+        <field name="domain">[("is_template", "=", False)]</field>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="project_project_view_kanban_access"/>
+        <field name="search_view_id" ref="project.view_project_project_filter"/>
+    </record>
+</odoo>

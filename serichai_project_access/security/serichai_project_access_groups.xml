@@ -1,0 +1,9 @@
+<odoo>
+    <record id="serichai_project_access_group_restricted" model="res.groups">
+        <field name="name">Restricted Project Access</field>
+        <field name="sequence">5</field>
+        <field name="privilege_id" ref="project.res_groups_privilege_project"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Assigned automatically to members of a Project Access Group; do not assign by hand.</field>
+    </record>
+</odoo>
