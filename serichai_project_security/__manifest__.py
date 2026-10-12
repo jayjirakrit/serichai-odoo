@@ -16,7 +16,7 @@ cannot be opened. In that project the stage filter does not apply: its "Product
 Development" menu opens a Kanban board with every stage of the project as a column (list and
 form also available). Create/delete stay blocked everywhere, including in the pinned project.
     """,
-    'depends': ['project'],
+    'depends': ['project', 'mrp'],
     'data': [
         'security/security_groups.xml',
         'security/ir.model.access.csv',

@@ -4,3 +4,4 @@ access_project_project_restricted,project.project.restricted,project.model_proje
 access_project_role_restricted,project.role.restricted,project.model_project_role,group_project_task_list_only,1,0,0,0
 access_project_task_recurrence_restricted,project.task.recurrence.restricted,project.model_project_task_recurrence,group_project_task_list_only,1,0,0,0
 access_project_task_property_access_manager,project.task.property.access.manager,model_project_task_property_access,project.group_project_manager,1,1,1,1
+access_mrp_production_restricted,mrp.production.restricted,mrp.model_mrp_production,group_project_task_list_only,1,1,0,0

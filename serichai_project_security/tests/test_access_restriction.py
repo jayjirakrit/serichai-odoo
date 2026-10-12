@@ -225,6 +225,13 @@ class TestTaskAccessRestriction(TransactionCase):
         with self._rpc_request('web_read'), self.assertRaises(AccessError):
             Task.browse(self.task_target.id).web_read({'name': {}})
 
+    def test_restricted_user_name_only_read_allowed_outside_pinned_project(self):
+        # Relational widgets (e.g. MO Project Tasks tags) resolve labels with a name-only web_read.
+        Task = self.env['project.task'].with_user(self.restricted_user)
+        with self._rpc_request('web_read'):
+            [vals] = Task.browse(self.task_target.id).web_read({'display_name': {}})
+        self.assertEqual(vals['display_name'], self.task_target.display_name)
+
     def test_restricted_user_list_read_unaffected_by_form_guard(self):
         # web_search_read calls web_read internally; the guard must not break the list.
         Task = self.env['project.task'].with_user(self.restricted_user)
