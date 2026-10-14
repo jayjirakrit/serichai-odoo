@@ -33,7 +33,9 @@ not `None`; `request.params['model'] == 'project.task'` and `['method'] == 'web_
 ### `web_read(specification)`
 If `_access_is_restricted_form_load()` and any record of `self` has `access_task_detail == False`,
 raise `AccessError("You are not allowed to open this task.")`. Internal calls (search_read,
-read_group, co-record reads) are unaffected (research D6).
+read_group, co-record reads) are unaffected (research D6). A name-only specification
+(keys within `{id, display_name}`) is never refused: relational widgets (e.g. the Project Tasks tags on
+a Manufacturing Order) resolve labels that way, and FR-015 says the guard is not a confidentiality boundary.
 
 ### `read(fields, load)`
 For restricted users removes entries of `task_properties` whose normalised `string` is in the

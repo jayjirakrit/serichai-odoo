@@ -88,6 +88,10 @@ class ProjectTask(models.Model):
         return params.get('model') == self._name and params.get('method') == 'web_read'
 
     def web_read(self, specification):
+        # A name-only spec is a relational widget resolving a label (e.g. the Project Tasks tags on
+        # a Manufacturing Order), not a task form being opened.
+        if set(specification) <= {'id', 'display_name'}:
+            return super().web_read(specification)
         if self._access_is_restricted_form_load() and not all(self.mapped('access_task_detail')):
             raise AccessError(self.env._("You are not allowed to open this task."))
         return super().web_read(specification)

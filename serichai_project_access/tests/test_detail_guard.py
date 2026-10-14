@@ -39,6 +39,12 @@ class TestDetailGuard(AccessCase):
             res = self.t_detail.with_user(self.user).web_read({'name': {}})
             self.assertEqual(res[0]['name'], 'D1')
 
+    def test_name_only_read_allowed_for_list_only(self):
+        # Relational widgets resolve labels with a name-only web_read; it must not be refused.
+        with patch(REQUEST, _request('web_read')):
+            res = self.t_read1.with_user(self.user).web_read({'display_name': {}})
+            self.assertEqual(res[0]['display_name'], self.t_read1.display_name)
+
     def test_write_implies_detail(self):
         with patch(REQUEST, _request('web_read')):
             res = self.t_write.with_user(self.user).web_read({'name': {}})
