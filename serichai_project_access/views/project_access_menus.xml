@@ -1,0 +1,22 @@
+<odoo>
+    <menuitem id="project_access_profile_menu" name="Project Access"
+              parent="project.menu_project_config" action="project_access_profile_action"
+              sequence="90" groups="project.group_project_manager"/>
+
+    <menuitem id="project_access_property_label_menu" name="Project Task Property Access"
+              parent="project.menu_project_config" action="project_access_property_label_action"
+              sequence="91" groups="project.group_project_manager"/>
+
+    <!-- Restricted users need the Project app icon. Additive only: the link disappears with
+         the control group when this module is uninstalled. Everything else under the app is
+         hidden for them by IrUiMenu._load_menus_blacklist (no core menu is rewritten). -->
+    <record id="project.menu_main_pm" model="ir.ui.menu">
+        <field name="group_ids" eval="[(4, ref('serichai_project_access_group_restricted'))]"/>
+    </record>
+
+    <!-- Shown to restricted users only: _load_menus_blacklist hides them from everyone else. -->
+    <menuitem id="menu_task_all_access" name="All Tasks" parent="project.menu_main_pm"
+              action="project_task_action_access_all" sequence="0"/>
+    <menuitem id="menu_project_access" name="Project" parent="project.menu_main_pm"
+              action="project_project_action_access" sequence="1"/>
+</odoo>

@@ -1,0 +1,45 @@
+<odoo>
+    <record id="project_access_property_label_view_list" model="ir.ui.view">
+        <field name="name">project.access.property.label.list</field>
+        <field name="model">project.access.property.label</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="project_access_property_label_view_form" model="ir.ui.view">
+        <field name="name">project.access.property.label.form</field>
+        <field name="model">project.access.property.label</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="alert alert-warning" role="alert" invisible="not line_count">
+                        This label is used in <field name="line_count" class="oe_inline"/> access
+                        line(s). Renaming or deleting it changes what those lines hide.
+                    </div>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="project_access_property_label_view_search" model="ir.ui.view">
+        <field name="name">project.access.property.label.search</field>
+        <field name="model">project.access.property.label</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="project_access_property_label_action" model="ir.actions.act_window">
+        <field name="name">Hidden Property Labels</field>
+        <field name="res_model">project.access.property.label</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

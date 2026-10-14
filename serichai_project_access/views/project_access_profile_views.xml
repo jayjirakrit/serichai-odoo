@@ -1,0 +1,84 @@
+<odoo>
+    <record id="project_access_profile_view_list" model="ir.ui.view">
+        <field name="name">project.access.profile.list</field>
+        <field name="model">project.access.profile</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="project_ids" widget="many2many_tags"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="project_access_profile_view_form" model="ir.ui.view">
+        <field name="name">project.access.profile.form</field>
+        <field name="model">project.access.profile</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger"
+                            invisible="active"/>
+                    <field name="active" invisible="1"/>
+                    <group>
+                        <field name="name"/>
+                        <field name="group_ids" widget="many2many_tags"/>
+                    </group>
+                    <notebook>
+                        <page string="User" name="users">
+                            <field name="user_ids" readonly="1" widget="many2many_tags"/>
+                        </page>
+                        <page string="Project" name="projects">
+                            <field name="line_ids">
+                                <list>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="project_ids" widget="many2many_tags"/>
+                                    <field name="access_level"/>
+                                    <field name="task_access" readonly="access_level == 'write'"/>
+                                </list>
+                                <form>
+                                    <div class="alert alert-warning" role="alert"
+                                         invisible="not warning_message">
+                                        <field name="warning_message"/>
+                                    </div>
+                                    <group>
+                                        <field name="project_ids" widget="many2many_tags"/>
+                                        <field name="access_level"/>
+                                        <field name="task_access" readonly="access_level == 'write'"/>
+                                    </group>
+                                    <group invisible="access_level == 'write'">
+                                        <field name="stages_exhausted" readonly="1"
+                                               invisible="not stages_exhausted"/>
+                                        <field name="stage_ids" widget="many2many_tags"/>
+                                        <field name="hidden_property_label_ids" widget="many2many_tags"
+                                               placeholder="Type a property label and press Enter"
+                                               options="{'no_create_edit': True, 'no_open': True}"/>
+                                        <field name="available_property_labels" readonly="1"
+                                               invisible="not available_property_labels"
+                                               string="Defined in the selected projects"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="project_access_profile_view_search" model="ir.ui.view">
+        <field name="name">project.access.profile.search</field>
+        <field name="model">project.access.profile</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="project_access_profile_action" model="ir.actions.act_window">
+        <field name="name">Project Access Group</field>
+        <field name="res_model">project.access.profile</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
