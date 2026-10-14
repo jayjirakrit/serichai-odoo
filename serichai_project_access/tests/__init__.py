@@ -7,4 +7,5 @@ from . import test_hidden_property_tags
 from . import test_detail_guard
 from . import test_access_tour
 from . import test_menus
+from . import test_calendar
 from . import test_migration

@@ -204,6 +204,7 @@ On go-live, existing restricted users keep the access they have today without ma
 - **FR-024**: Migration MUST move all users of the old role into that entry's department with no loss or gain of access.
 - **FR-025**: After migration the old restricted role module MUST be removed, with all its menu and visibility restrictions, and no conflicting restrictions remaining.
 - **FR-026**: The migration MUST be repeatable on a copy of production data for rehearsal before go-live.
+- **FR-027**: Restricted users MUST be able to view their tasks in a calendar (by deadline) from All Tasks and from a project. The calendar follows the same visibility, stage, property and Tags rules as the list, hides create/delete, and a task that cannot be opened shows the same warning instead of its form.
 
 ### Key Entities
 
