@@ -32,7 +32,7 @@
 ## Notes
 
 - Validation pass 1: two wording issues fixed ("database" used as a business term; FR-019 left the scope of the "High Value" filter unclear for users with mixed visibility). Pass 2: all items pass.
-- FR-001 names the module `serichai_project_configuration` because the user explicitly asked for that name; it is a product name, not an implementation detail.
+- FR-001 names the module `serichai_project_config` because the user explicitly asked for that name; it is a product name, not an implementation detail.
 - Kanban in-column drag-and-drop ordering is recorded as an accepted limitation under Assumptions. (The earlier limitation about losing the priority star was removed in revision 2: the star now comes first.)
 - Templates and configurable sort presets are explicitly out of scope (future features of the same module).
 - Interaction with hidden properties (spec 009): originally resolved by informed default (amount and filter hidden); superseded in revision 3 (no special integration).

@@ -173,7 +173,7 @@ Consequences for the compute:
 
 ## V7. Threshold, settings, recalculation, install (verified, revised at Gate 2)
 
-- Key `serichai_project_configuration.high_budget_threshold`. It is module-prefixed; the earlier
+- Key `serichai_project_config.high_budget_threshold`. It is module-prefixed; the earlier
   reference plan used `project_task_budget_sort.high_budget_threshold`, a module that does not exist
   here.
 - `config_parameter=` cannot hold 0: `res.config.settings.set_values` stores
@@ -202,11 +202,11 @@ Consequences for the compute:
   ORM computes nothing; `post_init_hook` then runs the batched recalculation.
 - Fail-safe parsing: a small `try/except (ValueError, TypeError, KeyError, AttributeError)` around one
   task, then `_logger.debug(..., task.id, exc_info=True)`, with no bare `except`. Support turns it on
-  with `--log-handler odoo.addons.serichai_project_configuration:DEBUG`.
+  with `--log-handler odoo.addons.serichai_project_config:DEBUG`.
 
 ## V8. Tests (planned)
 
-- `serichai_project_configuration/tests/test_budget_sort.py` covers US1-US5. That includes threshold
+- `serichai_project_config/tests/test_budget_sort.py` covers US1-US5. That includes threshold
   0, "property deleted, flag unchanged until the explicit recalculation", and the priority-first order.
 - It also covers US6 generically:
   - `project.task.read` is patched to strip the property, then to raise `AccessError`.
@@ -214,7 +214,7 @@ Consequences for the compute:
     order must be unchanged.
   - No 009 is needed. 009's own tests are unchanged, and no test file is added there.
 - Run on a dedicated database (name asked at implementation time; see quickstart.md). The
-  constitution gate (`-u serichai_project_configuration` on `serichai-db`) runs afterwards, and the
+  constitution gate (`-u serichai_project_config` on `serichai-db`) runs afterwards, and the
   user runs it.
 
 ## V9. Known limitations (documented, accepted by spec)
@@ -239,7 +239,7 @@ Consequences for the compute:
 
 ## D2. No link with spec 009 (decided at Gate 2, round 5)
 
-- **Decision**: `serichai_project_configuration` depends on `project` only and contains no 009
+- **Decision**: `serichai_project_config` depends on `project` only and contains no 009
   reference (FR-001). `serichai_project_access` is not modified: no dependency, no version bump, no
   code, no tests. There is no inter-module contract.
 - The user accepts that a hidden user simply sees 0, through `read()` (V5), and sees the filter.

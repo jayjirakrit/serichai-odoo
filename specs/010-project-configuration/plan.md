@@ -6,7 +6,7 @@
 
 ## Summary
 
-New addon `serichai_project_configuration`, which depends on `project` only.
+New addon `serichai_project_config`, which depends on `project` only.
 `serichai_project_access` (spec 009) is not modified.
 
 - **`is_high_value`** is a stored flag, computed as superuser. It comes from the task property
@@ -32,7 +32,7 @@ See [design.md](./design.md).
 **Storage**: PostgreSQL. One new column `project_task.is_high_value bool` and one
 `ir.config_parameter` key. `project_value` is not stored. No new model or table.
 
-**Testing**: `TransactionCase` in `serichai_project_configuration/tests/test_budget_sort.py`. The
+**Testing**: `TransactionCase` in `serichai_project_config/tests/test_budget_sort.py`. The
 "cannot see the property" case is simulated by patching `project.task.read`, so no 009 is needed.
 Use a dedicated test DB (quickstart.md).
 
@@ -64,7 +64,7 @@ costs one `read()` per batch of displayed rows.
 
 Technology Standards notes:
 - No `security/` directory: the module adds no model, group or rule.
-- The user runs the quality gate (`-u serichai_project_configuration` on `serichai-db`) after
+- The user runs the quality gate (`-u serichai_project_config` on `serichai-db`) after
   deployment (quickstart.md). Development tests use a throwaway DB.
 
 ## Contracts
@@ -90,7 +90,7 @@ specs/010-project-configuration/
 ### Source Code
 
 ```text
-serichai-odoo/serichai_project_configuration/      # NEW, depends: project
+serichai-odoo/serichai_project_config/      # NEW, depends: project
 ├── __init__.py                       # models; pre_init_hook, post_init_hook from hooks
 ├── __manifest__.py
 ├── hooks.py                          # create column; batched recalculation
@@ -120,4 +120,4 @@ No Constitution Check violations. Justified complexity (research):
 ## Post-merge follow-up
 
 - Amend the constitution "Addons" list (`/speckit-constitution`, PATCH) and `CLAUDE.md` to name
-  `serichai_project_configuration`.
+  `serichai_project_config`.

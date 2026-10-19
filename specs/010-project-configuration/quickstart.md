@@ -8,11 +8,11 @@ implementation time (shown below as `<test_db>`). Run from `odoo/`:
 ```bash
 ../.venv/bin/python3 odoo-bin --addons-path=addons,../muk_web_theme,../serichai-odoo -d <test_db> \
   --without-demo=all --no-http --test-enable --stop-after-init \
-  -i serichai_project_configuration --test-tags /serichai_project_configuration
+  -i serichai_project_config --test-tags /serichai_project_config
 ```
 
 Expected: 0 failed, 0 errors, and no warnings during install. The check
-`grep -rn "serichai_project_access\|_get_project_access" serichai_project_configuration/` must return
+`grep -rn "serichai_project_access\|_get_project_access" serichai_project_config/` must return
 nothing (FR-001). Spec 009's own tests are unchanged. If 009 is installed on the test DB, its suite
 still passes (`--test-tags /serichai_project_access`).
 
@@ -20,11 +20,11 @@ still passes (`--test-tags /serichai_project_access`).
 
 ```bash
 ../.venv/bin/python3 odoo-bin --addons-path=addons,../muk_web_theme,../serichai-odoo -d serichai-db \
-  --stop-after-init -i serichai_project_configuration
+  --stop-after-init -i serichai_project_config
 ```
 
 - `serichai_project_access` does not need to be upgraded: it is not changed.
-- Afterwards the user may run the constitution gate `-u serichai_project_configuration` with
+- Afterwards the user may run the constitution gate `-u serichai_project_config` with
   `--test-enable` against `serichai-db`. The tests write test records and roll them back.
 
 ## 3. Manual walkthrough (DB copy, as admin unless stated)

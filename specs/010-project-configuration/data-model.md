@@ -1,6 +1,6 @@
-# Data Model: serichai_project_configuration
+# Data Model: serichai_project_config
 
-The module `serichai_project_configuration` depends on `project` only and adds no model.
+The module `serichai_project_config` depends on `project` only and adds no model.
 `serichai_project_access` (spec 009) is not modified.
 
 ## project.task (inherited)
@@ -27,7 +27,7 @@ The model `_order` is unchanged.
 
 | Key | Where | Value |
 |---|---|---|
-| `serichai_project_configuration.high_budget_threshold` | `ir.config_parameter` | A float as text, e.g. `"50000000.0"` or `"0.0"`. Unset, empty, non-numeric, negative or non-finite gives 50,000,000. `"0.0"` means 0 |
+| `serichai_project_config.high_budget_threshold` | `ir.config_parameter` | A float as text, e.g. `"50000000.0"` or `"0.0"`. Unset, empty, non-numeric, negative or non-finite gives 50,000,000. `"0.0"` means 0 |
 | `res.config.settings.serichai_high_value_threshold` | Float without `config_parameter`; own `get_values`/`set_values` | Settings > Project > "Task Sorting", `base.group_system` only. Always written as `repr(value)`, so 0 is kept. Saving does not recompute; a hint points to Recalculate |
 
 ## Lifecycle

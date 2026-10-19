@@ -26,7 +26,7 @@
 
 ## Gates
 
-- `odoo-bin -d serichai-test --test-enable -u serichai_project_configuration,serichai_project_access --test-tags /serichai_project_configuration,/serichai_project_access` → pass: "0 failed, 0 error(s) of 116 tests" (40 configuration + 76 access); no addon warnings
+- `odoo-bin -d serichai-test --test-enable -u serichai_project_config,serichai_project_access --test-tags /serichai_project_config,/serichai_project_access` → pass: "0 failed, 0 error(s) of 116 tests" (40 configuration + 76 access); no addon warnings
 - Install/update without addon warnings → pass
 - serichai_project_access re-run together with the configuration addon (76 tests, pass)
 - Constitution gate used the throwaway DB `serichai-test`, not `serichai-db`, as instructed

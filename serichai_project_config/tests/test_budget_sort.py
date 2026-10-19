@@ -15,7 +15,7 @@ from ..models.project_task import (
 ORDER = 'priority desc, is_high_value desc, state, date_deadline asc, id desc'
 
 
-@tagged('post_install', '-at_install', 'serichai_project_configuration')
+@tagged('post_install', '-at_install', 'serichai_project_config')
 class TestBudgetSort(TransactionCase):
 
     @classmethod
@@ -278,7 +278,7 @@ class TestBudgetSort(TransactionCase):
             if raw == 11.0:
                 raise ValueError("unreadable")
             return real(prop_type, raw)
-        with patch('odoo.addons.serichai_project_configuration.models.project_task.parse_amount',
+        with patch('odoo.addons.serichai_project_config.models.project_task.parse_amount',
                    flaky):
             (bad | good)._compute_is_high_value()
         self.assertFalse(bad.is_high_value)

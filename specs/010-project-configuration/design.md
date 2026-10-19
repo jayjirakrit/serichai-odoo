@@ -6,7 +6,7 @@ Spec: [spec.md](./spec.md) | Plan: [plan.md](./plan.md) | Findings: [research.md
 
 ## Approach
 
-1. `serichai_project_configuration` depends only on `project`. `serichai_project_access` (009) is
+1. `serichai_project_config` depends only on `project`. `serichai_project_access` (009) is
    not modified, and there is no contract between them.
 2. One **stored** flag, `is_high_value`, computed as superuser from the property labelled
    "มูลค่าโครงการ" and the threshold. Every user gets the same sort.
@@ -63,7 +63,7 @@ Install --> pre_init_hook (column) --> post_init_hook --> _recompute_high_value
 
 ```python
 PROJECT_VALUE_LABEL = 'มูลค่าโครงการ'
-THRESHOLD_PARAM = 'serichai_project_configuration.high_budget_threshold'
+THRESHOLD_PARAM = 'serichai_project_config.high_budget_threshold'
 DEFAULT_THRESHOLD = 50_000_000.0
 _AMOUNT_RE = re.compile(r'[-+]?\d+(\.\d+)?')
 

@@ -1,5 +1,5 @@
 {
-    'name': 'Project Configuration',
+    'name': 'Serichai Project Configuration',
     'summary': 'High-value tasks first: sort task lists and boards by project value',
     'version': '1.0.0',
     'category': 'Project',

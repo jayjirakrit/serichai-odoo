@@ -6,7 +6,7 @@
 
 **Status**: Draft (revised after plan review, 2026-10-19)
 
-**Input**: User description: "I want to analysis and planning new module for project configuration starting with sort project task. New module call serichai_project_configuration." Reference rule: tasks whose project value (task property labelled "มูลค่าโครงการ") is above 50,000,000 come first, then all tasks by deadline (earliest first, no deadline last). If the property does not exist, tasks simply sort by deadline, with no errors.
+**Input**: User description: "I want to analysis and planning new module for project configuration starting with sort project task. New module call serichai_project_config." Reference rule: tasks whose project value (task property labelled "มูลค่าโครงการ") is above 50,000,000 come first, then all tasks by deadline (earliest first, no deadline last). If the property does not exist, tasks simply sort by deadline, with no errors.
 
 ## Background
 
@@ -154,7 +154,7 @@ When the project access module (spec 009) is installed, some users have the "ม
 
 **Module**
 
-- **FR-001**: The feature MUST be delivered as a new, separately installable project configuration module named `serichai_project_configuration`, intended to hold future project configuration features. It MUST depend only on the standard Project application (no dependency on other Serichai modules), so that other Serichai modules can build on it. The project access module (spec 009) MUST NOT be changed by this feature.
+- **FR-001**: The feature MUST be delivered as a new, separately installable project configuration module named `serichai_project_config`, intended to hold future project configuration features. It MUST depend only on the standard Project application (no dependency on other Serichai modules), so that other Serichai modules can build on it. The project access module (spec 009) MUST NOT be changed by this feature.
 
 **Project value**
 

@@ -8,7 +8,7 @@ from odoo.exceptions import AccessError
 _logger = logging.getLogger(__name__)
 
 PROJECT_VALUE_LABEL = 'มูลค่าโครงการ'
-THRESHOLD_PARAM = 'serichai_project_configuration.high_budget_threshold'
+THRESHOLD_PARAM = 'serichai_project_config.high_budget_threshold'
 DEFAULT_THRESHOLD = 50_000_000.0
 _AMOUNT_RE = re.compile(r'[-+]?\d+(\.\d+)?')
 
