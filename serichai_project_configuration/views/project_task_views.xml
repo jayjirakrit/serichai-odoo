@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Never inherit project_task_view_tree_main_base: the portal list inherits it. -->
+    <record id="project_task_view_tree_base" model="ir.ui.view">
+        <field name="name">project.task.view.list.base.inherit.high.value</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.project_task_view_tree_base"/>
+        <field name="arch" type="xml">
+            <list position="attributes">
+                <attribute name="default_order">priority desc, is_high_value desc, state, date_deadline asc, id desc</attribute>
+            </list>
+            <field name="date_deadline" position="after">
+                <field name="project_value" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_task_kanban" model="ir.ui.view">
+        <field name="name">project.task.kanban.inherit.high.value</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_kanban"/>
+        <field name="arch" type="xml">
+            <kanban position="attributes">
+                <attribute name="default_order">priority desc, is_high_value desc, state, date_deadline asc, id desc</attribute>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Not main task screens: restore the core order, no Project Value column -->
+    <record id="project_task_templates_list" model="ir.ui.view">
+        <field name="name">project.task.templates.list.restore.order</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.project_task_templates_list"/>
+        <field name="arch" type="xml">
+            <list position="attributes">
+                <attribute name="default_order">priority desc, sequence, state, date_deadline asc, id desc</attribute>
+            </list>
+            <field name="project_value" position="replace"/>
+        </field>
+    </record>
+
+    <record id="project_task_tree_view_project_milestone" model="ir.ui.view">
+        <field name="name">project.task.milestone.list.restore.order</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.project_task_tree_view_project_milestone"/>
+        <field name="arch" type="xml">
+            <list position="attributes">
+                <attribute name="default_order">priority desc, sequence, state, date_deadline asc, id desc</attribute>
+            </list>
+            <field name="project_value" position="replace"/>
+        </field>
+    </record>
+
+    <record id="project_task_templates_kanban" model="ir.ui.view">
+        <field name="name">project.task.templates.kanban.restore.order</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.project_task_templates_kanban"/>
+        <field name="arch" type="xml">
+            <kanban position="attributes">
+                <attribute name="default_order">priority desc, sequence, state, date_deadline asc, id desc</attribute>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="project_task_kanban_view_project_milestone" model="ir.ui.view">
+        <field name="name">project.task.milestone.kanban.restore.order</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.project_task_kanban_view_project_milestone"/>
+        <field name="arch" type="xml">
+            <kanban position="attributes">
+                <attribute name="default_order">priority desc, sequence, state, date_deadline asc, id desc</attribute>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_task_search_form" model="ir.ui.view">
+        <field name="name">project.task.search.form.inherit.high.value</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_search_form"/>
+        <field name="arch" type="xml">
+            <filter name="open_tasks" position="before">
+                <filter string="High Value" name="high_value" domain="[('is_high_value', '=', True)]"/>
+                <separator/>
+            </filter>
+        </field>
+    </record>
+</odoo>

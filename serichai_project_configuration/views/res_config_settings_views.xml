@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.high.value</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="project.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='tasks_management']" position="after">
+                <block title="Task Sorting" id="serichai_task_sorting" groups="base.group_system">
+                    <setting id="serichai_high_value_threshold_setting"
+                             string="High-Value Threshold"
+                             help="Tasks whose project value is above this amount are listed first.">
+                        <field name="serichai_high_value_threshold"/>
+                        <div class="mt8">
+                            <button name="action_serichai_recompute_high_value" type="object"
+                                    string="Recalculate high-value flag" class="btn-link"
+                                    icon="oi-arrow-right"/>
+                        </div>
+                        <div class="text-muted">
+                            Run after changing the threshold or a project's 'มูลค่าโครงการ' property; edited tasks update on their own.
+                        </div>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>
