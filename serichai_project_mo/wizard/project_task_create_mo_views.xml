@@ -1,0 +1,22 @@
+<odoo>
+    <record id="project_task_create_mo_view_form" model="ir.ui.view">
+        <field name="name">project.task.create.mo.form</field>
+        <field name="model">project.task.create.mo</field>
+        <field name="arch" type="xml">
+            <form string="Create Manufacturing Orders">
+                <field name="task_id" invisible="1"/>
+                <div class="alert alert-warning" role="alert" invisible="not warning">
+                    <field name="warning" nolabel="1"/>
+                </div>
+                <group>
+                    <field name="user_id" options="{'no_create': True}"/>
+                </group>
+                <footer>
+                    <button name="action_confirm" type="object" string="Confirm"
+                            class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" special="cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

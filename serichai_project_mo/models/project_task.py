@@ -1,4 +1,5 @@
-from odoo import models, fields, api
+from odoo import Command, api, fields, models
+from odoo.exceptions import LockError, UserError
 from odoo.tools import format_date, format_datetime, formatLang, html2plaintext
 
 
@@ -18,11 +19,67 @@ class ProjectTask(models.Model):
 
     mrp_production_ids = fields.Many2many('mrp.production', 'project_task_mrp_production_rel', 'project_task_id', 'mrp_production_id', string='Manufacturing Orders')
     mrp_production_count = fields.Integer(string='MO Count', compute='_compute_mrp_production_count',)
+    finish_goods_ids = fields.Many2many(
+        'product.product', 'project_task_finish_goods_rel', 'project_task_id', 'product_id',
+        string='Finish Goods', domain="[('type', '=', 'consu')]", copy=False)
 
     @api.depends('mrp_production_ids')
     def _compute_mrp_production_count(self):
         for task in self:
             task.mrp_production_count = len(task.mrp_production_ids)
+
+    def action_view_mrp_productions(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': self.env._("Manufacturing Orders"),
+            'res_model': 'mrp.production',
+            'view_mode': 'list,form',
+            'domain': [('project_task_ids', 'in', self.ids)],
+        }
+
+    def action_open_create_mo_wizard(self):
+        self.ensure_one()
+        self._check_can_create_mos()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': self.env._("Create Manufacturing Orders"),
+            'res_model': 'project.task.create.mo',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_task_id': self.id},
+        }
+
+    def _check_can_create_mos(self):
+        self.ensure_one()
+        self.check_access('write')  # real user: ACL + record rules
+        if not self.finish_goods_ids:
+            raise UserError(self.env._("Add at least one Finish Goods product first."))
+        if not self.project_id:
+            raise UserError(self.env._("Set a project on the task before creating Manufacturing Orders."))
+
+    def _create_mos_from_finish_goods(self, user):
+        """Create one draft MO per uncovered Finish Goods product; return the new MOs."""
+        self._check_can_create_mos()
+        try:
+            self.lock_for_update(allow_referencing=True)
+        except LockError:
+            raise UserError(self.env._("Manufacturing Orders are being created for this task. Try again."))
+        self.invalidate_recordset(['mrp_production_ids'])
+        # sudo: no custom group may create mrp.production; access to the task was checked above.
+        # sudo() keeps the uid, so create_uid is the real user; user_id is the chosen assignee.
+        task = self.sudo()
+        covered = task.mrp_production_ids.filtered(lambda mo: mo.state != 'cancel').product_id
+        todo = task.finish_goods_ids - covered
+        mos = task.env['mrp.production'].create([{
+            'product_id': product.id,
+            'user_id': user.id,
+            'project_id': task.project_id.id,
+            'origin': task.name,
+        } for product in todo])
+        # Writing the task row makes a stale-snapshot concurrent confirm fail and be retried
+        task.write({'mrp_production_ids': [Command.link(mo.id) for mo in mos]})
+        return mos
 
     def _get_report_task_properties(self):
         """Return the task's properties for the Contract MO report, as a list of

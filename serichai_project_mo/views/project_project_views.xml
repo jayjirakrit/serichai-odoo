@@ -1,0 +1,14 @@
+<odoo>
+    <record id="project_project_view_form_mo_done_mail" model="ir.ui.view">
+        <field name="name">project.project.form.mo.done.mail</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='settings']" position="inside">
+                <group name="mo_notification" string="Manufacturing">
+                    <field name="mo_done_mail_template_id" options="{'no_create': True}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

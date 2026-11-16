@@ -2,12 +2,16 @@
 {
     'name': 'Serichai Project MO',
     'summary': 'Manage project management for Serichai Group',
-    'version': '1.0.0',
+    'version': '1.1.1',
     'description': """Allows to manage project management for Serichai Group.""",
-    'depends': ['project', 'mrp'],
+    'depends': ['project', 'mrp', 'project_mrp', 'mail'],
     'data': [
+        "security/ir.model.access.csv",
+        "data/project_project_data.xml",
         "views/mrp_production_views.xml",
         "views/project_task_views.xml",
+        "views/project_project_views.xml",
+        "wizard/project_task_create_mo_views.xml",
         "report/project_task_report_views.xml",
         "report/project_task_report_templates.xml"
     ],
