@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-17
 
-**Status**: Implemented (browser verification pending)
+**Status**: Closed (2026-11-18) - implemented; browser verification not performed, see Closure note
 
 **Updated**: 2026-11-18 - aligned with what was delivered: the interface uses the application's standard search bar, filters, view switcher and pager instead of a custom toolbar; product page follows the newer mock-up (two columns); product managers can edit the product photo as well as the Specification; search, filters, group-bys and default filters specified. Changed items are marked **[Amended]**, removed ones **[Dropped: reason]**.
 
@@ -234,6 +234,13 @@ Users find plain screens unattractive. They want a richer, cohesive look like th
 - Pastel picture-area colors are decorative, follow card position, and carry no meaning.
 - The "N products" wording, tint, lift, shadow and pill are visual styles judged in the sign-off review, with all colors taken from the theme.
 - Out of scope: cart or ordering, exporting a PDF catalog, editing anything except the specification and photo, and public (website) catalog.
+
+## Closure note (2026-11-18)
+
+Closed by the owner. The feature is implemented and the automated checks pass (24 automated tests, 0 failed). The visual
+and browser checks (four-per-row grid, pastel colors, hover shadow, product page layout, photo upload, widths 360/768/1280,
+theme recoloring and dark variant, mock sign-off SC-007/SC-009/SC-012) were NOT performed and are accepted as open risk. Open
+tasks T028, T029, T046, T047, T059 and T060 are closed without being done.
 
 ## Implementation status
 

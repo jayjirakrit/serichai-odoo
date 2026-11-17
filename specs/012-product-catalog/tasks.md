@@ -83,8 +83,8 @@
 
 - [X] T026 [P] Create `ADDON/i18n/serichai_product_catalog.pot` and `ADDON/i18n/th.po` with Thai labels for every user-visible string (menu, search placeholders, tabs, badges, empty states, button) (FR-022) [4.10]
 - [X] T027 [P] Add a `serichai_product_catalog` section to `/home/odoo/serichai-odoo/CLAUDE.md` and the constitution's Addons list in `/home/odoo/serichai-odoo/.specify/memory/constitution.md` (plan.md note)
-- [ ] T028 Run the gate command on a throwaway DB (`-d serichai-test-012`, `-i serichai_product_catalog`): all tests pass, no missing-translation or view-validation warnings; then `-u` on `serichai-db` per quickstart.md
-- [ ] T029 Walk the manual checklist in `specs/012-product-catalog/quickstart.md` (MuK theme, plain user / purchase user / product manager, theme color change, 400px width) and record results
+- [~] T028 Run the gate command on a throwaway DB (`-d serichai-test-012`, `-i serichai_product_catalog`): all tests pass, no missing-translation or view-validation warnings; then `-u` on `serichai-db` per quickstart.md _(Closed 2026-11-18 without being done; spec closed by the owner.)_
+- [~] T029 Walk the manual checklist in `specs/012-product-catalog/quickstart.md` (MuK theme, plain user / purchase user / product manager, theme color change, 400px width) and record results _(Closed 2026-11-18 without being done; spec closed by the owner.)_
 
 ## Phase 9: Convergence
 
@@ -122,8 +122,8 @@
 ## Phase 12: Amended polish
 
 - [X] T045 [P] Update the `serichai_product_catalog` section of `/home/odoo/serichai-odoo/CLAUDE.md` and the Addons list in `/home/odoo/serichai-odoo/.specify/memory/constitution.md`: OWL `js_class` views, computed catalog fields, test commands _(Amended: CLAUDE.md and the constitution now describe a no-JS addon.)_
-- [ ] T046 Run the amended gate from quickstart.md on a throwaway DB (`-d serichai-test-012`, `-i serichai_product_catalog`, `--test-tags /serichai_product_catalog`) including the tour, then the hoot suite with headless Chrome; fix hoot filter syntax if needed; supersedes T028
-- [ ] T047 Walk manual checks 8-12 in `specs/012-product-catalog/quickstart.md`: mock comparison against FR-023..033 (SC-009), result update under 1 s at 5,000 products (SC-010), role access test with zero leaks (SC-011), no horizontal scrollbar at 360, 768 and 1280 px (SC-012), theme recolor and dark mode; supersedes T029
+- [~] T046 Run the amended gate from quickstart.md on a throwaway DB (`-d serichai-test-012`, `-i serichai_product_catalog`, `--test-tags /serichai_product_catalog`) including the tour, then the hoot suite with headless Chrome; fix hoot filter syntax if needed; supersedes T028 _(Closed 2026-11-18 without being done; spec closed by the owner.)_
+- [~] T047 Walk manual checks 8-12 in `specs/012-product-catalog/quickstart.md`: mock comparison against FR-023..033 (SC-009), result update under 1 s at 5,000 products (SC-010), role access test with zero leaks (SC-011), no horizontal scrollbar at 360, 768 and 1280 px (SC-012), theme recolor and dark mode; supersedes T029 _(Closed 2026-11-18 without being done; spec closed by the owner.)_
 
 ---
 
@@ -171,11 +171,15 @@ Built from direct user requests after the OWL implementation; recorded here so t
 - [X] T056 [US6] Product page layout from `product_catalog_mock (1).html`: two columns (sticky sidebar with 300 px tinted picture, name, reference . category, large price, "Can be Sold / Can be Purchased" badges; tabs on the right), max width 1400 px, stacked below 900 px, in `ADDON/views/product_template_views.xml` and `ADDON/static/src/scss/catalog.scss`
 - [X] T057 [US3] Editable product photo for product managers (`image_1920`, preview `image_1024`, `groups="product.group_product_manager"`) with a readonly `image_1024` copy for others in `ADDON/views/product_template_views.xml`; tests `test_manager_can_update_photo_plain_user_cannot` and `test_get_view_photo_editable_per_role` in `ADDON/tests/test_product_catalog.py` (extends FR-015 from Specification to Specification and photo)
 - [X] T058 i18n and docs: `ADDON/i18n/serichai_product_catalog.pot` and `ADDON/i18n/th.po` re-exported and pruned, `/home/odoo/serichai-odoo/CLAUDE.md` and `/home/odoo/serichai-odoo/.specify/memory/constitution.md` describe the no-JS addon
-- [ ] T059 Browser verification (needs a person or headless Chrome; supersedes T028, T029, T046 and T047): grid 4/3/2/1, pastels, hover shadow, form layout against the newer mock, attribute lines, technical-data separators, photo upload as manager vs plain user, default filters, theme recolor and dark mode, widths 360/768/1280, mock sign-off (SC-007, SC-009, SC-012), client-side search timing (SC-010)
-- [ ] T060 Refresh `specs/012-product-catalog/quality-report.md` for the no-OWL rework (run the quality review again after T059 findings are fixed)
+- [~] T059 Browser verification (needs a person or headless Chrome; supersedes T028, T029, T046 and T047): grid 4/3/2/1, pastels, hover shadow, form layout against the newer mock, attribute lines, technical-data separators, photo upload as manager vs plain user, default filters, theme recolor and dark mode, widths 360/768/1280, mock sign-off (SC-007, SC-009, SC-012), client-side search timing (SC-010) _(Closed 2026-11-18 without being done; spec closed by the owner.)_
+- [~] T060 Refresh `specs/012-product-catalog/quality-report.md` for the no-OWL rework (run the quality review again after T059 findings are fixed) _(Closed 2026-11-18 without being done; spec closed by the owner.)_
 
 ---
 
 ## Status note (2026-11-18)
 
 Phases 1-9 and 10-14 (except T028, T029, T046, T047, T059, T060) are done. Python gate: 24 tests, 0 failed on the throwaway DB. Open items all need a browser. T028/T029/T046/T047 are superseded by T059.
+
+## Closure (2026-11-18)
+
+Spec closed by the owner. `[~]` marks tasks closed without being done (browser verification T028, T029, T046, T047, T059 and the quality-report refresh T060). All other tasks are `[X]`.

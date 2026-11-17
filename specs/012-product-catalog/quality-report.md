@@ -1,5 +1,7 @@
 # Quality Report: 012 Product Catalog (amended, US6 / FR-023..034 / SC-009..012)
 
+> **Closed 2026-11-18.** This report predates the no-OWL rework (native views, standard search, photo editing) and was not refreshed; the Python gate was re-run after the rework (24 tests, 0 failed). Browser verification was not performed.
+
 **Verdict: PASS WITH NOTES.** Python gate green. Browser-only checks (tour, hoot, manual walk) could not run here and remain unverified.
 
 ## Gates
