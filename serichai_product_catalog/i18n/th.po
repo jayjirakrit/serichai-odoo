@@ -1,0 +1,252 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* serichai_product_catalog
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-17 14:01+0000\n"
+"PO-Revision-Date: 2026-11-17 14:01+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: th\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "<span class=\"small text-muted me-2\">Customer Taxes</span>"
+msgstr "<span class=\"small text-muted me-2\">ภาษีลูกค้า</span>"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "<span class=\"small text-muted me-2\">Vendor Taxes</span>"
+msgstr "<span class=\"small text-muted me-2\">ภาษีผู้ขาย</span>"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "Attributes"
+msgstr "คุณลักษณะ"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "Barcode"
+msgstr "บาร์โค้ด"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_search
+msgid "Can be Purchased"
+msgstr "ซื้อได้"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_search
+msgid "Can be Sold"
+msgstr "ขายได้"
+
+#. module: serichai_product_catalog
+#: model:ir.actions.act_window,name:serichai_product_catalog.product_catalog_action
+#: model:ir.ui.menu,name:serichai_product_catalog.product_catalog_menu
+msgid "Catalog"
+msgstr "แคตตาล็อก"
+
+#. module: serichai_product_catalog
+#: model:ir.model.fields,field_description:serichai_product_catalog.field_product_product__catalog_cost_incl_tax
+#: model:ir.model.fields,field_description:serichai_product_catalog.field_product_template__catalog_cost_incl_tax
+msgid "Catalog Cost Incl Tax"
+msgstr "ต้นทุนรวมภาษี"
+
+#. module: serichai_product_catalog
+#: model:ir.model.fields,field_description:serichai_product_catalog.field_product_product__catalog_margin
+#: model:ir.model.fields,field_description:serichai_product_catalog.field_product_template__catalog_margin
+msgid "Catalog Margin"
+msgstr "กำไรขั้นต้น"
+
+#. module: serichai_product_catalog
+#: model:ir.model.fields,field_description:serichai_product_catalog.field_product_product__catalog_price_incl_tax
+#: model:ir.model.fields,field_description:serichai_product_catalog.field_product_template__catalog_price_incl_tax
+msgid "Catalog Price Incl Tax"
+msgstr "ราคารวมภาษี"
+
+#. module: serichai_product_catalog
+#. odoo-javascript
+#: code:addons/serichai_product_catalog/static/src/views/catalog_toolbar.xml:0
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_search
+msgid "Category"
+msgstr "หมวดหมู่"
+
+#. module: serichai_product_catalog
+#: model:ir.model.fields,field_description:serichai_product_catalog.field_product_template__display_name
+msgid "Display Name"
+msgstr "ชื่อที่แสดง"
+
+#. module: serichai_product_catalog
+#: model:ir.model.fields,field_description:serichai_product_catalog.field_product_template__id
+msgid "ID"
+msgstr "ไอดี"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "Lead Time (days)"
+msgstr "ระยะเวลาจัดส่ง (วัน)"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.actions.act_window,help:serichai_product_catalog.product_catalog_action
+msgid "No products found"
+msgstr "ไม่พบสินค้า"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "No purchase description"
+msgstr "ไม่มีรายละเอียดการซื้อ"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "No sales description"
+msgstr "ไม่มีรายละเอียดการขาย"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "No specification yet."
+msgstr "ยังไม่มีสเปกสินค้า"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "Open Standard Form"
+msgstr "เปิดฟอร์มมาตรฐาน"
+
+#. module: serichai_product_catalog
+#. odoo-javascript
+#: code:addons/serichai_product_catalog/static/src/fields/catalog_hero_field.xml:0
+#: model:ir.model,name:serichai_product_catalog.model_product_template
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_kanban
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_search
+msgid "Product"
+msgstr "สินค้า"
+
+#. module: serichai_product_catalog
+#. odoo-javascript
+#: code:addons/serichai_product_catalog/static/src/fields/catalog_hero_field.xml:0
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_kanban
+msgid "Purchase"
+msgstr "จัดซื้อ"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_list
+msgid "Reference"
+msgstr "รหัสอ้างอิง"
+
+#. module: serichai_product_catalog
+#. odoo-javascript
+#: code:addons/serichai_product_catalog/static/src/fields/catalog_hero_field.xml:0
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_kanban
+msgid "Sale"
+msgstr "ขาย"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "Sales"
+msgstr "การขาย"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "Specification"
+msgstr "สเปกสินค้า"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "Technical Data"
+msgstr "ข้อมูลทางเทคนิค"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.actions.act_window,help:serichai_product_catalog.product_catalog_action
+msgid "Try another name, reference, barcode or category."
+msgstr "ลองค้นหาด้วยชื่อ รหัสอ้างอิง บาร์โค้ด หรือหมวดหมู่อื่น"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "Unit of Measure"
+msgstr "หน่วยวัด"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "Vendor Pricelist"
+msgstr "ราคาผู้ขาย"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "Volume"
+msgstr "ปริมาตร"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "Weight"
+msgstr "น้ำหนัก"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "Write the product specification…"
+msgstr "เขียนสเปกสินค้า…"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "<span class=\"small text-muted d-block\">Sales Price</span>"
+msgstr "<span class=\"small text-muted d-block\">ราคาขาย</span>"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "<span class=\"small text-muted d-block\">Price incl. Tax</span>"
+msgstr "<span class=\"small text-muted d-block\">ราคารวมภาษี</span>"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "<span class=\"small text-muted d-block\">Margin</span>"
+msgstr "<span class=\"small text-muted d-block\">กำไรขั้นต้น</span>"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "<span class=\"small text-muted d-block\">Cost</span>"
+msgstr "<span class=\"small text-muted d-block\">ต้นทุน</span>"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "<span class=\"small text-muted d-block\">Cost incl. Tax</span>"
+msgstr "<span class=\"small text-muted d-block\">ต้นทุนรวมภาษี</span>"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_form
+msgid "<span class=\"small text-muted d-block\">Unit of Measure</span>"
+msgstr "<span class=\"small text-muted d-block\">หน่วยวัด</span>"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_search
+msgid "Goods"
+msgstr "สินค้า"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_search
+msgid "Services"
+msgstr "บริการ"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_search
+msgid "Combo"
+msgstr "ชุดสินค้า"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_search
+msgid "Favorites"
+msgstr "รายการโปรด"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_search
+msgid "Tags"
+msgstr "แท็ก"
+
+#. module: serichai_product_catalog
+#: model_terms:ir.ui.view,arch_db:serichai_product_catalog.product_catalog_view_search
+msgid "Product Type"
+msgstr "ประเภทสินค้า"

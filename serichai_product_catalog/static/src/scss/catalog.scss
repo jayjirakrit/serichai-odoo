@@ -1,0 +1,294 @@
+// Product catalog styling. Colors come only from Bootstrap CSS variables,
+// which follow the MuK theme palette (light and dark).
+.o_serichai_product_catalog_kanban {
+    // Short fixed-height picture area. The image is taken out
+    // of the flow so it cannot stretch the box back to a square.
+    .o_serichai_product_catalog_card_img {
+        position: relative;
+        overflow: hidden;
+        height: 11rem;
+        width: 100%;
+        background: var(--primary-bg-subtle);
+
+        img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    // A different pastel per card: lavender, mint, light blue, pink and
+    // cream, from the theme's subtle colors (pink is a mix of --pink).
+    .o_kanban_record:nth-child(5n + 1) .o_serichai_product_catalog_card_img {
+        background: var(--primary-bg-subtle);
+    }
+
+    .o_kanban_record:nth-child(5n + 2) .o_serichai_product_catalog_card_img {
+        background: var(--success-bg-subtle);
+    }
+
+    .o_kanban_record:nth-child(5n + 3) .o_serichai_product_catalog_card_img {
+        background: var(--info-bg-subtle);
+    }
+
+    .o_kanban_record:nth-child(5n + 4) .o_serichai_product_catalog_card_img {
+        background: color-mix(in srgb, var(--pink) 15%, var(--body-bg));
+    }
+
+    .o_kanban_record:nth-child(5n) .o_serichai_product_catalog_card_img {
+        background: var(--warning-bg-subtle);
+    }
+
+    // The arch class sits on the view root, so target the renderer inside.
+    // Explicit column count: 4 cards per row on desktop, fewer on narrower
+    // screens (the core flex layout depends on window width). `d-flex` on
+    // the renderer is !important, so display needs it too.
+    .o_kanban_renderer.o_kanban_ungrouped {
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: .75rem;
+        align-content: start;
+
+        .o_kanban_record {
+            width: auto;
+            margin: 0;
+            flex-grow: 0;
+        }
+
+        .o_kanban_ghost {
+            display: none;
+        }
+
+        @media (max-width: 991.98px) {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        @media (max-width: 767.98px) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        @media (max-width: 575.98px) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+}
+
+// Specificity is raised on purpose: core sets border-color and background
+// on `.o_kanban_record:not(.o_kanban_ghost)`.
+.o_serichai_product_catalog_kanban
+.o_kanban_record.o_serichai_product_catalog_card:not(.o_kanban_ghost) {
+    border: 1px solid rgba(var(--primary-rgb), .35);
+    border-radius: 1rem;
+    background: var(--white);
+    overflow: hidden;
+    transition: transform .15s, box-shadow .15s;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 .5rem 1rem rgba(var(--body-color-rgb), .15);
+    }
+
+    &.o_record_selected,
+    &:focus-visible {
+        border-color: var(--primary);
+        background: rgba(var(--primary-rgb), .08);
+        box-shadow: 0 0 0 2px var(--primary);
+    }
+
+    .badge {
+        margin-left: .25rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: none;
+
+        &:hover {
+            transform: none;
+        }
+    }
+}
+
+.o_serichai_product_catalog_price {
+    font-weight: 700;
+    color: var(--primary-text-emphasis);
+}
+
+// List rows: hover tint.
+.o_serichai_product_catalog_list {
+    .o_data_row:hover {
+        background: rgba(var(--primary-rgb), .08);
+
+        > td {
+            background: transparent;
+        }
+    }
+}
+
+.o_serichai_product_catalog_form {
+    max-width: 100%;
+
+    // Mock layout: sticky sidebar (picture, name, price, badges) beside tabs.
+    .o_form_sheet {
+        max-width: 1400px;
+    }
+
+    .o_serichai_product_catalog_layout {
+        display: grid;
+        grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+        gap: .5rem 1.5rem;
+        align-items: start;
+    }
+
+    .o_serichai_product_catalog_side {
+        position: sticky;
+        top: 0;
+        padding: .5rem 0;
+    }
+
+    .o_serichai_product_catalog_hero_img {
+        width: 100%;
+        height: 300px;
+        border-radius: var(--border-radius);
+        background: rgba(var(--primary-rgb), .1);
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .o_serichai_product_catalog_price_big {
+        display: block;
+        margin-top: .5rem;
+        font-size: 1.4rem;
+    }
+
+    .o_serichai_product_catalog_tile {
+        padding: .5rem .75rem;
+        border-radius: var(--border-radius);
+        background: rgba(var(--primary-rgb), .08);
+
+        .fw-bold {
+            color: var(--primary-text-emphasis);
+        }
+    }
+
+    // Tax values as pills.
+    .o_field_many2many_tags .badge {
+        border-radius: 50rem;
+        background: rgba(var(--primary-rgb), .12) !important;
+        color: var(--primary-text-emphasis) !important;
+    }
+
+    // Technical data: label/value rows, one separator per row, label and
+    // value centered on the same line.
+    .o_serichai_product_catalog_tech {
+        max-width: 40rem;
+
+        th,
+        td {
+            padding: .6rem .5rem;
+            vertical-align: middle;
+            border: 0;
+            border-bottom: 1px solid var(--border-color);
+            background: transparent;
+            box-shadow: none;
+        }
+
+        th {
+            width: 10rem;
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+
+        // Field widgets bring their own margins and block display.
+        .o_field_widget {
+            display: inline-flex;
+            width: auto;
+            margin: 0;
+            vertical-align: middle;
+        }
+
+        .o_row {
+            display: flex;
+            align-items: center;
+            gap: .25rem;
+        }
+
+        // Attributes row: label on top of its own lines.
+        th.align-top {
+            vertical-align: top;
+            padding-top: .85rem;
+        }
+    }
+
+    .o_serichai_product_catalog_vendors {
+        max-width: 100%;
+        overflow-x: auto;
+
+        thead th {
+            background: rgba(var(--primary-rgb), .08);
+            color: var(--secondary-color);
+        }
+
+        td.o_list_number,
+        th.o_list_number_th {
+            text-align: right;
+        }
+    }
+
+    .o_notebook .nav-link.active {
+        color: var(--primary);
+        border-bottom: 2px solid var(--primary);
+        font-weight: 600;
+    }
+}
+
+// Specification content: bordered tables, callouts and links.
+.o_serichai_product_catalog_spec {
+    max-width: 100%;
+    overflow-x: auto;
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th,
+        td {
+            border: 1px solid var(--border-color);
+            padding: .25rem .5rem;
+        }
+
+        th {
+            background: rgba(var(--primary-rgb), .08);
+            border-bottom: 2px solid var(--primary);
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+    }
+
+    blockquote {
+        border-left: 4px solid var(--primary);
+        background: rgba(var(--primary-rgb), .08);
+        padding: .5rem .75rem;
+    }
+
+    a {
+        color: var(--primary-text-emphasis);
+    }
+}
+
+@media (max-width: 575.98px) {
+    .o_serichai_product_catalog_form {
+        .o_serichai_product_catalog_tech th {
+            width: 6rem;
+        }
+    }
+}

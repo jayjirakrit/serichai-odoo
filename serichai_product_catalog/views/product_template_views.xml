@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Search modelled on the standard product search: one box for name /
+         reference / barcode, category, tags, type/favorite/sale/purchase
+         filters and grouping. Default filters: Goods AND Can be Sold
+         (separate groups). No Archived filter (archived products are not
+         part of the catalog). -->
+    <record id="product_catalog_view_search" model="ir.ui.view">
+        <field name="name">product.catalog.search</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <search string="Product">
+                <field name="name" string="Product"
+                       filter_domain="['|', '|', '|', ('name', 'ilike', self), ('default_code', 'ilike', self), ('product_variant_ids.default_code', 'ilike', self), ('barcode', 'ilike', self)]"/>
+                <field name="categ_id" operator="child_of"/>
+                <field name="product_tag_ids" string="Tags"/>
+                <separator/>
+                <filter name="services" string="Services" domain="[('type', '=', 'service')]"/>
+                <filter name="combo" string="Combo" domain="[('type', '=', 'combo')]"/>
+                <separator/>
+                <filter name="favorites" string="Favorites" domain="[('is_favorite', '=', True)]"/>
+                <separator/>
+                <!-- Separate groups: Goods AND Can be Sold -->
+                <filter name="goods" string="Goods" domain="[('type', '=', 'consu')]"/>
+                <separator/>
+                <filter name="filter_sale" string="Can be Sold" domain="[('sale_ok', '=', True)]"/>
+                <separator/>
+                <filter name="filter_purchase" string="Can be Purchased" domain="[('purchase_ok', '=', True)]"/>
+                <group>
+                    <filter name="groupby_type" string="Product Type" context="{'group_by': 'type'}"/>
+                    <filter name="groupby_categ" string="Category" context="{'group_by': 'categ_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Grid -->
+    <record id="product_catalog_view_kanban" model="ir.ui.view">
+        <field name="name">product.catalog.kanban</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <kanban create="0" delete="0" sample="1" class="o_serichai_product_catalog_kanban">
+                <field name="currency_id"/>
+                <field name="sale_ok"/>
+                <field name="purchase_ok"/>
+                <templates>
+                    <t t-name="card" class="o_serichai_product_catalog_card p-0">
+                        <field name="image_512" widget="image" alt="Product"
+                               class="o_serichai_product_catalog_card_img"
+                               options="{'img_class': 'w-100 object-fit-contain'}"/>
+                        <div class="px-3 pt-2">
+                            <div class="fw-bold text-truncate"><field name="name"/></div>
+                            <div class="text-muted small text-truncate" t-if="record.default_code.value">
+                                <field name="default_code"/>
+                            </div>
+                        </div>
+                        <footer class="px-3 pb-2 pt-1 align-items-center">
+                            <field name="list_price" widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"
+                                   class="o_serichai_product_catalog_price"/>
+                            <div class="ms-auto">
+                                <span t-if="record.sale_ok.raw_value"
+                                      class="badge rounded-pill text-bg-success">Sale</span>
+                                <span t-if="record.purchase_ok.raw_value"
+                                      class="badge rounded-pill text-bg-info">Purchase</span>
+                            </div>
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- List -->
+    <record id="product_catalog_view_list" model="ir.ui.view">
+        <field name="name">product.catalog.list</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <list create="0" delete="0" duplicate="0"
+                  export_xlsx="0" sample="1" class="o_serichai_product_catalog_list">
+                <field name="image_128" widget="image" string=" " options="{'size': [40, 40]}"/>
+                <field name="name"/>
+                <field name="default_code" string="Reference"/>
+                <field name="categ_id"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="list_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Full-screen product page. edit="true" is needed for the managers'
+         description field; Odoo cannot restrict root attributes by group
+         (groups on xpath ignore attributes, extension views cannot carry
+         groups). Every field is readonly for non-managers, so they get
+         no editable control. -->
+    <record id="product_catalog_view_form" model="ir.ui.view">
+        <field name="name">product.catalog.form</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <form create="0" delete="0" duplicate="0" edit="true"
+                  class="o_serichai_product_catalog_form">
+                <header>
+                    <button name="action_open_standard_form" type="object"
+                            string="Open Standard Form"/>
+                </header>
+                <sheet>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="sale_ok" invisible="1"/>
+                    <field name="purchase_ok" invisible="1"/>
+                    <div class="o_serichai_product_catalog_layout">
+                    <div class="o_serichai_product_catalog_side">
+                        <!-- Photo: editable for product managers only (the ACL
+                             refuses other writes); readonly copy for others. -->
+                        <field name="image_1920" widget="image"
+                               class="o_serichai_product_catalog_hero_img"
+                               groups="product.group_product_manager"
+                               options="{'preview_image': 'image_1024', 'img_class': 'object-fit-contain'}"/>
+                        <field name="image_1024" widget="image" readonly="1"
+                               class="o_serichai_product_catalog_hero_img"
+                               groups="!product.group_product_manager"
+                               options="{'img_class': 'object-fit-contain'}"/>
+                        <h3 class="mt-3 mb-1"><field name="name" readonly="1"/></h3>
+                        <div class="text-muted">
+                            <field name="default_code" readonly="1" invisible="not default_code" class="me-1"/>
+                            <span invisible="not default_code or not categ_id">&#183;</span>
+                            <field name="categ_id" readonly="1" options="{'no_open': True}" class="ms-1"/>
+                        </div>
+                        <field name="list_price" widget="monetary" readonly="1"
+                               options="{'currency_field': 'currency_id'}"
+                               class="o_serichai_product_catalog_price o_serichai_product_catalog_price_big"/>
+                        <div class="mt-1">
+                            <span invisible="not sale_ok" class="badge rounded-pill text-bg-success me-1">Can be Sold</span>
+                            <span invisible="not purchase_ok" class="badge rounded-pill text-bg-info">Can be Purchased</span>
+                        </div>
+                    </div>
+                    <div class="o_serichai_product_catalog_main">
+                    <notebook>
+                        <page name="specification" string="Specification">
+                            <field name="description" widget="html"
+                                   class="o_serichai_product_catalog_spec"
+                                   groups="product.group_product_manager"
+                                   placeholder="Write the product specification…"/>
+                            <field name="description" widget="html" readonly="1"
+                                   class="o_serichai_product_catalog_spec"
+                                   groups="!product.group_product_manager"
+                                   invisible="not description"/>
+                            <div class="text-muted" invisible="description"
+                                 groups="!product.group_product_manager">
+                                No specification yet.
+                            </div>
+                            <separator string="Technical Data"/>
+                            <table class="table table-sm o_serichai_product_catalog_tech">
+                                <tr invisible="not barcode">
+                                    <th>Barcode</th>
+                                    <td><field name="barcode" readonly="1"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Unit of Measure</th>
+                                    <td><field name="uom_id" readonly="1" options="{'no_open': True}"/></td>
+                                </tr>
+                                <tr invisible="not weight">
+                                    <th>Weight</th>
+                                    <td class="o_row">
+                                        <field name="weight" readonly="1"/>
+                                        <field name="weight_uom_name"/>
+                                    </td>
+                                </tr>
+                                <tr invisible="not volume">
+                                    <th>Volume</th>
+                                    <td class="o_row">
+                                        <field name="volume" readonly="1"/>
+                                        <field name="volume_uom_name"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </page>
+                        <page name="sales" string="Sales">
+                            <div class="row g-2 mb-3">
+                                <div class="col-6 col-lg-4">
+                                    <div class="o_serichai_product_catalog_tile">
+                                        <span class="small text-muted d-block">Sales Price</span>
+                                        <field name="list_price" widget="monetary" readonly="1"
+                                               options="{'currency_field': 'currency_id'}" class="fw-bold"/>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-lg-4" invisible="not taxes_id">
+                                    <div class="o_serichai_product_catalog_tile">
+                                        <span class="small text-muted d-block">Price incl. Tax</span>
+                                        <field name="catalog_price_incl_tax" widget="monetary" readonly="1"
+                                               options="{'currency_field': 'currency_id'}" class="fw-bold"/>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-lg-4" groups="purchase.group_purchase_user">
+                                    <div class="o_serichai_product_catalog_tile">
+                                        <span class="small text-muted d-block">Margin</span>
+                                        <field name="catalog_margin" widget="monetary" readonly="1"
+                                               options="{'currency_field': 'currency_id'}" class="fw-bold"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="o_serichai_product_catalog_pills mb-3" invisible="not taxes_id">
+                                <span class="small text-muted me-2">Customer Taxes</span>
+                                <field name="taxes_id" widget="many2many_tags" readonly="1"/>
+                            </div>
+                            <field name="description_sale" readonly="1" placeholder="No sales description"/>
+                        </page>
+                        <page name="purchase" string="Purchase" groups="purchase.group_purchase_user">
+                            <div class="row g-2 mb-3">
+                                <div class="col-6 col-lg-4">
+                                    <div class="o_serichai_product_catalog_tile">
+                                        <span class="small text-muted d-block">Cost</span>
+                                        <field name="standard_price" widget="monetary" readonly="1"
+                                               options="{'currency_field': 'currency_id'}" class="fw-bold"/>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-lg-4">
+                                    <div class="o_serichai_product_catalog_tile">
+                                        <span class="small text-muted d-block">Cost incl. Tax</span>
+                                        <field name="catalog_cost_incl_tax" widget="monetary" readonly="1"
+                                               options="{'currency_field': 'currency_id'}" class="fw-bold"/>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-lg-4">
+                                    <div class="o_serichai_product_catalog_tile">
+                                        <span class="small text-muted d-block">Unit of Measure</span>
+                                        <field name="uom_id" readonly="1" options="{'no_open': True}" class="fw-bold"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="o_serichai_product_catalog_pills mb-3" invisible="not supplier_taxes_id">
+                                <span class="small text-muted me-2">Vendor Taxes</span>
+                                <field name="supplier_taxes_id" widget="many2many_tags" readonly="1"/>
+                            </div>
+                            <separator string="Vendor Pricelist"/>
+                            <field name="seller_ids" readonly="1" class="o_serichai_product_catalog_vendors">
+                                <list>
+                                    <field name="partner_id"/>
+                                    <field name="min_qty"/>
+                                    <field name="price"/>
+                                    <field name="delay" string="Lead Time (days)"/>
+                                </list>
+                            </field>
+                            <field name="description_purchase" readonly="1" placeholder="No purchase description"/>
+                        </page>
+                    </notebook>
+                    </div>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="product_catalog_action" model="ir.actions.act_window">
+        <field name="name">Catalog</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="product_catalog_view_search"/>
+        <field name="domain">[('active', '=', True)]</field>
+        <field name="context">{'search_default_goods': 1, 'search_default_filter_sale': 1}</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('product_catalog_view_kanban')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('product_catalog_view_list')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('product_catalog_view_form')})]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No products found</p>
+            <p>Try another name, reference, barcode or category.</p>
+        </field>
+    </record>
+
+    <menuitem id="product_catalog_menu" name="Catalog" sequence="25"
+              web_icon="product,static/description/icon.png"
+              action="product_catalog_action" groups="base.group_user"/>
+</odoo>
