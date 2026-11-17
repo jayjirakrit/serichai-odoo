@@ -15,6 +15,11 @@
         "report/project_task_report_views.xml",
         "report/project_task_report_templates.xml"
     ],
+    'assets': {
+        'web.assets_backend': [
+            'serichai_project_mo/static/src/js/many2many_tags_open.js',
+        ],
+    },
     'installable': True,
     'author': 'Serichai Group',
     'license': 'AGPL-3',
