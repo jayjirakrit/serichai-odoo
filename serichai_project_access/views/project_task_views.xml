@@ -70,4 +70,22 @@
         <field name="view_id" ref="project_task_view_list_access"/>
         <field name="act_window_id" ref="project_task_action_access_project"/>
     </record>
+
+    <!-- Spec 013: confidential rich-text above the general description.
+         Visible/editable for Project User and Administrator only. -->
+    <record id="view_task_form_confidential_description" model="ir.ui.view">
+        <field name="name">project.task.form.confidential.description</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='description_page']//field[@name='description']" position="before">
+                <separator string="Confidential Information" groups="project.group_project_user"/>
+                <field name="confidential_description" type="html"
+                       options="{'resizable': false}"
+                       groups="project.group_project_user"
+                       placeholder="Add confidential details about this task..."/>
+                <separator string="General"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>

@@ -22,6 +22,17 @@ class ProjectTask(models.Model):
         compute='_compute_access_flags', search='_search_access_task_detail',
         help="Task is visible and the current user may open its form.")
 
+    # Spec 013: ORM-enforced field groups (read, write, search, export, view stripping).
+    # Project User/Administrator only; internal users without project.group_project_user
+    # (e.g. department users granted tasks through a Project Access Group) are excluded.
+    # copy=False and no tracking/history so the content never leaks to duplicates or chatter.
+    confidential_description = fields.Html(
+        string="Confidential Information",
+        sanitize_attributes=False,
+        copy=False,
+        groups='project.group_project_user',
+    )
+
     # ------------------------------------------------------------
     # Access flags (used by the global rules, views and the guard)
     # ------------------------------------------------------------
